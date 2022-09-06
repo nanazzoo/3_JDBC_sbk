@@ -55,7 +55,8 @@ public class JDBCExample {
 //			   --> 생략해도 자동으로 메모리 로드가 진행됨(명시적으로 작성 권장)
 			
 //		2. 연결 정보를 담은 Connection을 생성
-//		 	--> DriverManager 객체를 이용해서 Connection 객체를 만들어 얻어옴!
+//		 	--> DriverManager 객체
+//			를 이용해서 Connection 객체를 만들어 얻어옴!
 			
 			String type = "jdbc:oracle:thin:@"; //JDBC 드라이버의 종류
 			
@@ -77,7 +78,7 @@ public class JDBCExample {
 //			SQLException: DB 관련 최상위 예외
 			
 //			중간 확인
-			System.out.println(conn);
+//			System.out.println(conn);
 //			oracle.jdbc.driver.T4CConnection@6c40365c
 		
 //		3. SQL 작성
@@ -135,6 +136,20 @@ public class JDBCExample {
 			e.printStackTrace();
 		} finally {
 		/*4단계 : 사용한 JDBC 객체 자원 반환(close())*/
+		/* ResultSet, Statement, Connection 닫기(생성 역순으로 닫는 것 권장)*/
+			
+			try {
+				if(rs != null) rs.close();
+				if(stmt != null) stmt.close();
+				if(conn != null) conn.close();
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+			
+			
+			
 		}
 		
 		
