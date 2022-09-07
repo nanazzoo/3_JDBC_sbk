@@ -64,7 +64,8 @@ public class EmployeeDAO {
 					+ "	   JOB_NAME, SALARY\r\n"
 					+ "FROM EMPLOYEE\r\n"
 					+ "LEFT JOIN DEPARTMENT ON (DEPT_ID = DEPT_CODE)\r\n"
-					+ "JOIN JOB USING(JOB_CODE)";
+					+ "JOIN JOB USING(JOB_CODE)"
+					+ " ORDER BY 1";
 			
 			// Statement 객체 생성
 			stmt = conn.createStatement();
@@ -334,6 +335,99 @@ public class EmployeeDAO {
 		}
 		
 //		결과 반환
+		return result;
+	}
+
+	
+	/** 사번이 일치하는 사원 정보 수정 DAO
+	 * 
+	 * @param emp
+	 * @return
+	 */
+	public int updateEmployee(Employee emp) {
+		int result = 0;
+		
+		try {
+			Class.forName(driver);
+			conn = DriverManager.getConnection(url, user, pw);
+			
+			conn.setAutoCommit(false); // AutoCommit 비활성화
+			
+			String sql = "UPDATE EMPLOYEE SET "
+					+ " EMAIL = ?, PHONE = ?, SALARY = ? "
+					+ " WHERE EMP_ID = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+//			?에 알맞은 값 세팅
+			pstmt.setString(1, emp.getEmail());
+			pstmt.setString(2, emp.getPhone());
+			pstmt.setInt(3, emp.getSalary());
+			pstmt.setInt(4, emp.getEmpId());
+			
+			result = pstmt.executeUpdate(); // 반영된 행의 개수 반환
+			
+//			*트랜잭션 제어 처리
+			if(result == 0) {
+				conn.rollback();
+			} else {
+				conn.commit();
+			}
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+//				JDBC 객체 자원 반환
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return result; // 결과 반환
+	}
+	
+	
+	
+	/** 사번이 일치하는 사원 정보 삭제 DAO
+	 * 
+	 * @param empId
+	 * @return result
+	 */
+	public int deleteEmployee(int empId) {
+		int result = 0;
+		
+		try {
+			Class.forName(driver);
+			conn = DriverManager.getConnection(url, user, pw);
+			
+			conn.setAutoCommit(false);
+			
+			String sql = "DELETE FROM EMPLOYEE WHERE EMP_ID = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, empId);
+			
+			result = pstmt.executeUpdate();
+			
+			if(result > 0) conn.commit();
+			else conn.rollback();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
 		return result;
 	}
 	

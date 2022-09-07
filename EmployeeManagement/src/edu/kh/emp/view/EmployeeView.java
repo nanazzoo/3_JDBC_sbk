@@ -48,8 +48,8 @@ public class EmployeeView {
 				case 1:  insertEmployee();   break;
 				case 2:  selectAll();  break;
 				case 3:  selectEmpId();  break;
-				case 4:     break;
-				case 5:     break;
+				case 4:  updateEmployee();   break;
+				case 5:  deleteEmployee();   break;
 				case 6:     break;
 				case 7:     break;
 				case 8:     break;
@@ -230,6 +230,73 @@ public class EmployeeView {
 		
 		
 	}
+	
+	
+	/** 
+	 * 사번이 일치하는 사원 정보 수정(이메일, 전화번호, 급여)
+	 */
+	public void updateEmployee() {
+		System.out.println("<사번이 일치하는 사원 정보 수정>");
+		
+		int empId = inputEmpId();
+		
+		System.out.print("이메일: ");
+		String email = sc.next();
+		
+		System.out.print("전화번호(-제외): ");
+		String phone = sc.next();
+		
+		System.out.print("급여: ");
+		int salary = sc.nextInt();
+		
+//		기본 생성자로 객체 생성 후 setter를 이용해서 초기화
+		Employee emp = new Employee();
+		emp.setEmpId(empId);
+		emp.setEmail(email);
+		emp.setPhone(phone);
+		emp.setSalary(salary);
+		
+		int result = dao.updateEmployee(emp);
+		
+		if(result > 0) { //UPDATE(DML) -> 반영된 행의 개수 반환
+			System.out.println("사원 정보가 수정되었습니다.");
+		} else {
+			System.out.println("사번이 일치하는 사원이 존재하지 않습니다.");
+		}
+		
+		
+	}
+	
+	
+	
+	/**
+	 * 사번이 일치하는 사원 정보 삭제
+	 */
+	public void deleteEmployee() {
+		System.out.println("<사번이 일치하는 사원 정보 삭제>");
+		
+		int empId = inputEmpId();
+		
+		System.out.print("정말 삭제하시겠습니까(Y/N)?");
+		char input = sc.next().toUpperCase().charAt(0);
+		
+		if(input == 'Y') {
+			int result = dao.deleteEmployee(empId);
+			
+			if(result > 0) {
+				System.out.println("삭제되었습니다.");
+			} else {
+				System.out.println("사번이 일치하는 사원이 존재하지 않습니다.");
+			}
+			
+		} else {
+			System.out.println("취소되었습니다.");
+		}
+		
+		
+	}
+	
+	
 	
 	
 	
