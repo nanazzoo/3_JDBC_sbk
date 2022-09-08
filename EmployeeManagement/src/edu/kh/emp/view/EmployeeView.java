@@ -1,7 +1,9 @@
 package edu.kh.emp.view;
 
+import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 import edu.kh.emp.model.dao.EmployeeDAO;
@@ -36,6 +38,12 @@ public class EmployeeView {
 				System.out.println("7. 입력 받은 급여 이상을 받는 모든 사원 정보 조회");
 				System.out.println("8. 부서별 급여 합 전체 조회");
 				System.out.println("9. 주민등록번호가 일치하는 사원 정보 조회");
+				System.out.println("10. 직급별 급여 평균 조회");
+				System.out.println("11. 입력받은 입사일 이전에 입사한 사원 조회");
+				System.out.println("12. 이름에 입력받은 글자가 포함된 사원 조회");
+				System.out.println("13. 입력 받은 사번의 사원명과 사수명 조회");
+
+				
 				System.out.println("0. 프로그램 종료");
 				
 				System.out.print("메뉴 선택 >> ");
@@ -50,10 +58,14 @@ public class EmployeeView {
 				case 3:  selectEmpId();  break;
 				case 4:  updateEmployee();   break;
 				case 5:  deleteEmployee();   break;
-				case 6:     break;
-				case 7:     break;
-				case 8:     break;
+				case 6:  selectDeptEmp();   break;
+				case 7:  selectSalaryEmp();   break;
+				case 8:  selectDeptTotalSalary();   break;
 				case 9:  selectEmpNo();   break;
+				case 10:  selectJobAvgSalary();   break;
+				case 11:  selectHireDate();   break;
+				case 12:  selectName();   break;
+				case 13:  selectManager();   break;
 				case 0:  System.out.println("프로그램을 종료합니다...");   break;
 				default: System.out.println("메뉴에 존재하는 번호만 입력하세요.");
 				}
@@ -297,8 +309,162 @@ public class EmployeeView {
 	}
 	
 	
+	/** 
+	 * 입력 받은 부서와 일치하는 모든 사원 정보 조회
+	 */
+	public void selectDeptEmp() {
+		System.out.println("<입력 받은 부서와 일치하는 모든 사원 정보 조회>");
+		
+		System.out.print("부서 입력: ");
+		String input = sc.next();
+		
+		List<Employee> resultList = dao.selectDeptEmp(input);
+		
+		if(resultList.isEmpty()) {
+			System.out.println("일치하는 사원 정보가 없습니다.");
+		} else {
+			printAll(resultList);
+		}
+		
+	}
 	
 	
+	/**
+	 * 입력 받은 급여 이상을 받는 모든 사원 정보 조회
+	 */
+	public void selectSalaryEmp() {
+		System.out.println("<입력 받은 급여 이상을 받는 모든 사원 정보 조회>");
+		
+		System.out.print("급여 입력: ");
+		int input = sc.nextInt();
+		
+		List<Employee> resultList = dao.selectSalaryEmp(input);
+		
+		if(resultList.isEmpty()) {
+			System.out.println("일치하는 사원 정보가 없습니다.");
+		} else {
+			printAll(resultList);
+		}
+		
+	}
 	
 	
+	/**
+	 * 부서별 급여 합 전체 조회
+	 */
+	public void selectDeptTotalSalary() {
+		// DB 조회 결과를 HashMap<String, Integer>에 옮겨 담아서 반환
+        // 부서코드, 급여 합 조회
+		
+		System.out.println("<부서별 급여 합 전체 조회>");
+		
+		Map<String, Integer> map = dao.selectDeptTotalSalary();
+		
+		System.out.println("   부서코드   :  급여 합계     ");
+		System.out.println("--------------------------------");
+		for(String key : map.keySet()) {
+			Integer value = map.get(key);
+			System.out.printf("%7s : %10d \n", key, value);
+		}
+
+		
+		
+	}
+	
+	
+	/**
+	 * 직급별 급여 평균 조회
+	 */
+	public void selectJobAvgSalary() {
+		// DB 조회 결과를 HashMap<String, Double>에 옮겨 담아서 반환 
+        // 직급명, 급여 평균(소수점 첫 째자리 까지) 조회
+		
+		System.out.println("<직급별 급여 평균 조회>");
+		
+		Map<String, Integer> map = dao.selectJobAvgSalary();
+		
+		System.out.println("    직급명   :  급여 평균     ");
+		System.out.println("-------------------------------");
+		for(String key : map.keySet()) {
+			Integer value = map.get(key);
+			System.out.printf("%10s : %10d \n", key, value);
+		}
+		
+		
+		
+	}
+	
+	/**
+	 * 입력받은 입사일 이전에 입사한 사원 조회
+	 */
+	public void selectHireDate() {
+		System.out.println("<입력받은 입사일 이전에 입사한 사원 조회>");
+		
+		System.out.print("입사일 입력(yyyy-mm-dd): ");
+		String input = sc.next();
+		
+		List<Employee> list = dao.selectHireDate(input);
+		
+		if(list.isEmpty()) {
+			System.out.println("조회된 사원 정보가 없습니다.");
+			
+		} else {
+			System.out.println("사번 |    입사일    |   이름  | 주민 등록 번호 |        이메일        |  전화 번호  |    부서    |  직책  |   급여  " );
+			System.out.println("------------------------------------------------------------------------------------------------");
+			for(Employee emp : list) { 
+				System.out.printf(" %2d |  %10s  | %4s | %s | %20s | %11s | %8s | %3s | %d\n",
+						emp.getEmpId(),emp.getHireDate(), emp.getEmpName(), emp.getEmpNo(), emp.getEmail(), 
+						emp.getPhone(), emp.getDepartmentTitle(), emp.getJobName(), emp.getSalary());
+			}
+		}
+		
+	}
+	
+	
+	/**
+	 * 이름에 입력받은 글자가 포함된 사원 조회
+	 */
+	public void selectName() {
+		System.out.println("<이름에 입력받은 글자가 포함된 사원 조회>");
+		
+		System.out.print("검색할 글자 입력: ");
+		String input = sc.next();
+		
+		List<Employee> resultList = dao.selectName(input);
+		
+		printAll(resultList);
+		
+		
+	}
+	
+	
+	/**
+	 * 입력 받은 사번의 사원명과 사수명 조회
+	 */
+	public void selectManager() {
+		System.out.println("<입력 받은 사번의 사원명과 사수명 조회>");
+		
+		int input = inputEmpId();
+		
+		Employee emp = dao.selectManager(input);
+		
+		if(emp == null) {
+			System.out.println("조회된 사원 정보가 없습니다.");
+			
+		} else {
+			System.out.println("사번 |   이름  | 사수 번호 | 사수명" );
+			System.out.println("------------------------------------------------------------------------------------------------");
+			System.out.printf(" %2d  | %4s | %8d | %s\n",
+					emp.getEmpId(), emp.getEmpName(), emp.getManagerId(), emp.getManagerName());
+		}
+		
+	}
+		
+		
 }
+	
+	
+	
+	
+	
+	

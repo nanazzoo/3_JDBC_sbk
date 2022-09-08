@@ -1,13 +1,17 @@
 package edu.kh.emp.model.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import edu.kh.emp.model.vo.Employee;
 
@@ -430,6 +434,421 @@ public class EmployeeDAO {
 		
 		return result;
 	}
+
+	
+	
+	/** 입력 받은 부서와 일치하는 모든 사원 정보 조회 DAO
+	 * 
+	 * @param input
+	 * @return resultList
+	 */
+	public List<Employee> selectDeptEmp(String input) {
+		
+		List<Employee> resultList = new ArrayList<>();
+		
+		try {
+
+			// 2. JDBC 참조 변수에 객체 대입
+			// -> conn, stmt, rs에 객체 대입
+			
+			Class.forName(driver); // 오라클 jdbc 드라이버 객체 메모리 로드
+			
+			conn = DriverManager.getConnection(url, user, pw);
+			// 오라클 jdbc 드라이버 객체를 이용하여 DB 접속 방법 생성
+			
+			
+			String sql = "SELECT EMP_ID, EMP_NAME, EMP_NO, EMAIL, PHONE,"
+					+ " NVL(DEPT_TITLE, '부서없음') DEPT_TITLE,"
+					+ " JOB_NAME, SALARY"
+					+ " FROM EMPLOYEE"
+					+ " LEFT JOIN DEPARTMENT ON (DEPT_ID = DEPT_CODE)"
+					+ " JOIN JOB USING(JOB_CODE)"
+					+ " WHERE DEPT_TITLE = '"+input+"'";
+			
+			// Statement 객체 생성
+			stmt = conn.createStatement();
+			
+			// SQL을 수행 후 결과(ResultSet) 반환 받음
+			rs = stmt.executeQuery(sql);
+			
+			// 3. 조회 결과를 얻어와 한 행씩 접근하여 
+			// Employee 객체 생성 후 컬럼 값 옮겨 담기
+			// -> List 추가
+			while(rs.next()) {
+				
+				int empId = rs.getInt("EMP_ID");
+				// EMP_ID 컬럼은 문자열 컬럼이지만
+				// 저장된 값들이 모두 숫자형태 
+				// -> DB에서 자동으로 형변환 진행해서 얻어옴
+				
+				String empName = rs.getString("EMP_NAME");
+				String empNo = rs.getString("EMP_NO");
+				String email = rs.getString("EMAIL");
+				String phone = rs.getString("PHONE");
+				String departmentTitle = rs.getString("DEPT_TITLE");
+				String jobName = rs.getString("JOB_NAME");
+				int salary = rs.getInt("SALARY");
+				
+				Employee emp = new Employee(empId, empName, empNo, email, 
+										phone, departmentTitle, jobName, salary);
+				
+				resultList.add(emp); // List 담기
+				
+			} // while 종료
+			
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			
+			// 4. JDBC 객체 자원 반환
+			try {
+				if(rs != null) rs.close();
+				if(stmt != null) stmt.close();
+				if(conn != null) conn.close();
+				
+			}catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		
+		// 5. 결과 반환
+		return resultList;
+	}
+
+	
+	/** 입력 받은 급여 이상을 받는 모든 사원 정보 조회
+	 * 
+	 * @param input
+	 * @return
+	 */
+	public List<Employee> selectSalaryEmp(int input) {
+		
+		List<Employee> resultList = new ArrayList<>();
+		
+		try {
+			Class.forName(driver);
+			
+			conn = DriverManager.getConnection(url, user, pw);
+			
+			
+			String sql = "SELECT EMP_ID, EMP_NAME, EMP_NO, EMAIL, PHONE,"
+					+ " NVL(DEPT_TITLE, '부서없음') DEPT_TITLE,"
+					+ " JOB_NAME, SALARY"
+					+ " FROM EMPLOYEE"
+					+ " LEFT JOIN DEPARTMENT ON (DEPT_ID = DEPT_CODE)"
+					+ " JOIN JOB USING(JOB_CODE)"
+					+ " WHERE SALARY >= " + input;
+			
+			stmt = conn.createStatement();
+
+			rs = stmt.executeQuery(sql);
+			
+			while(rs.next()) {
+				
+				int empId = rs.getInt("EMP_ID");
+				String empName = rs.getString("EMP_NAME");
+				String empNo = rs.getString("EMP_NO");
+				String email = rs.getString("EMAIL");
+				String phone = rs.getString("PHONE");
+				String departmentTitle = rs.getString("DEPT_TITLE");
+				String jobName = rs.getString("JOB_NAME");
+				int salary = rs.getInt("SALARY");
+				
+				Employee emp = new Employee(empId, empName, empNo, email, 
+										phone, departmentTitle, jobName, salary);
+				
+				resultList.add(emp);
+				
+			}
+			
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+
+			try {
+				if(rs != null) rs.close();
+				if(stmt != null) stmt.close();
+				if(conn != null) conn.close();
+				
+			}catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return resultList;
+	}
+	
+	
+	
+	/** 부서별 급여 합 전체 조회 DAO
+	 * 
+	 * @return map
+	 */
+	public Map<String, Integer> selectDeptTotalSalary() {
+		Map<String,Integer> map = new LinkedHashMap();
+		
+		try {
+			Class.forName(driver);
+			conn = DriverManager.getConnection(url, user, pw);
+			
+			
+			String sql = "SELECT NVL(DEPT_CODE, '없음') 부서코드, SUM(SALARY) 급여"
+					+ " FROM EMPLOYEE"
+					+ " GROUP BY DEPT_CODE"
+					+ " ORDER BY 1";
+			
+			stmt = conn.createStatement();
+			
+			rs = stmt.executeQuery(sql);
+			
+			while(rs.next()) {
+				
+				String deptCode = rs.getString("부서코드");
+				Integer sumSalary = rs.getInt("급여");
+				
+				map.put(deptCode, sumSalary);	
+			}
+		
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(rs != null) rs.close();
+				if(stmt != null) stmt.close();
+				if(conn != null) conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		
+		return map;
+	}
+
+	
+	
+	
+	/** 직급별 급여 평균 조회 DAO
+	 * 
+	 * @return map
+	 */
+	public Map<String, Integer> selectJobAvgSalary() {
+		
+		Map<String, Integer> map = new LinkedHashMap();
+		
+		try {
+			Class.forName(driver);
+			conn = DriverManager.getConnection(url, user, pw);
+			
+			String sql = "SELECT JOB_NAME 직급명, ROUND(AVG(SALARY), 1) 평균급여"
+					+ " FROM EMPLOYEE"
+					+ " JOIN JOB USING(JOB_CODE)"
+					+ " GROUP BY JOB_NAME"
+					+ " ORDER BY 평균급여";
+			
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(sql);
+			
+			while(rs.next()) {
+				String jobName = rs.getString("직급명");
+				Integer avgSalary = rs.getInt("평균급여");
+				
+				map.put(jobName, avgSalary);
+				
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(rs != null) rs.close();
+				if(stmt != null) stmt.close();
+				if(conn != null) conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return map;
+	}
+
+	
+	/** 입력받은 입사일 이전에 입사한 사원 조회 DAO
+	 * 
+	 * @param input
+	 * @return list
+	 */
+	public List<Employee> selectHireDate(String input) {
+		List<Employee> list = new ArrayList<>();
+		
+		try {
+			Class.forName(driver);
+			conn = DriverManager.getConnection(url, user, pw);
+			
+			String sql = "SELECT EMP_ID, HIRE_DATE, EMP_NAME, EMP_NO, EMAIL, PHONE,"
+					+ " NVL(DEPT_TITLE, '부서없음') DEPT_TITLE,"
+					+ " JOB_NAME, SALARY"
+					+ " FROM EMPLOYEE e"
+					+ " LEFT JOIN DEPARTMENT ON (DEPT_ID = DEPT_CODE)"
+					+ " JOIN JOB USING(JOB_CODE)"
+					+ " WHERE HIRE_DATE < '"+input+"'"
+							+ "ORDER BY 2";
+			
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(sql);
+			
+			while(rs.next()) {
+				int empId = rs.getInt("EMP_ID");
+				Date hireDate = rs.getDate("HIRE_DATE");
+				String empName = rs.getString("EMP_NAME");
+				String empNo = rs.getString("EMP_NO");
+				String email = rs.getString("EMAIL");
+				String phone = rs.getString("PHONE");
+				String departmentTitle = rs.getString("DEPT_TITLE");
+				String jobName = rs.getString("JOB_NAME");
+				int salary = rs.getInt("SALARY");
+				
+				Employee emp = new Employee(empId, empName, empNo, email, 
+						phone, departmentTitle, jobName, salary, hireDate);
+				
+				list.add(emp);
+						
+			}
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(rs != null) rs.close();
+				if(stmt != null) stmt.close();
+				if(conn != null) conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		
+		return list;
+	}
+
+	
+	
+	/** 이름에 입력받은 글자가 포함된 사원 조회 DAO
+	 * 
+	 * @param input
+	 * @return
+	 */
+	public List<Employee> selectName(String input) {
+		List<Employee> resultList = new ArrayList<>();
+		
+		try {
+			Class.forName(driver);
+			conn = DriverManager.getConnection(url, user, pw);
+			
+			String sql = "SELECT EMP_ID, HIRE_DATE, EMP_NAME, EMP_NO, EMAIL, PHONE,"
+					+ " NVL(DEPT_TITLE, '부서없음') DEPT_TITLE,"
+					+ " JOB_NAME, SALARY"
+					+ " FROM EMPLOYEE"
+					+ " LEFT JOIN DEPARTMENT ON (DEPT_ID = DEPT_CODE)"
+					+ " JOIN JOB USING(JOB_CODE)"
+					+ " WHERE EMP_NAME LIKE('%"+input+"%')";
+			
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(sql);
+			
+			while(rs.next()) {
+				
+				int empId = rs.getInt("EMP_ID");
+				String empName = rs.getString("EMP_NAME");
+				String empNo = rs.getString("EMP_NO");
+				String email = rs.getString("EMAIL");
+				String phone = rs.getString("PHONE");
+				String departmentTitle = rs.getString("DEPT_TITLE");
+				String jobName = rs.getString("JOB_NAME");
+				int salary = rs.getInt("SALARY");
+				
+				Employee emp = new Employee(empId, empName, empNo, email, 
+						phone, departmentTitle, jobName, salary);
+				
+				resultList.add(emp);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(rs != null) rs.close();
+				if(stmt != null) stmt.close();
+				if(conn != null) conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return resultList;
+	}
+	
+	
+	
+	
+	/** 입력 받은 사번의 사원명과 사수명 조회
+	 * 
+	 * @param input
+	 * @return
+	 */
+	public Employee selectManager(int input) {
+		Employee emp = null;
+		
+		try {
+			Class.forName(driver);
+			conn = DriverManager.getConnection(url, user, pw);
+			
+			String sql = "SELECT e.EMP_ID 사번 , e.EMP_NAME 사원명, e.MANAGER_ID 사수번호, "
+					+ " e2.EMP_NAME 사수명"
+					+ " FROM EMPLOYEE e"
+					+ " LEFT JOIN EMPLOYEE e2 ON(e.MANAGER_ID = e2.EMP_ID)"
+					+ " WHERE e.EMP_ID = " + input;
+			
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(sql);
+			
+			while(rs.next()) {
+				
+				int empId = rs.getInt("사번");
+				String empName = rs.getString("사원명");
+				int managerId = rs.getInt("사수번호");
+				String managerName = rs.getString("사수명");
+				
+				emp = new Employee(empId, empName, managerId, managerName);
+				
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(rs != null) rs.close();
+				if(stmt != null) stmt.close();
+				if(conn != null) conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		
+		return emp;
+	}
+	
+	
+	
+	
+	
+	
 	
 	
 	

@@ -1,5 +1,7 @@
 package edu.kh.emp.model.vo;
 
+import java.sql.Date;
+
 // VO(Value Object) : 값 저장용 객체 (== DB 조회 결과 한 행을 저장)
 public class Employee {
 	private int empId; 		// 사원 번호(사번)
@@ -16,6 +18,8 @@ public class Employee {
 	private String salLevel; //급여등급
 	private double bonus; //보너스
 	private int managerId; //사수번호
+	private Date hireDate;
+	private String managerName;
 	
 
 	public Employee() {} // 기본 생성자
@@ -50,6 +54,29 @@ public class Employee {
 		this.managerId = managerId;
 	}
 	
+	
+	public Employee(int empId, String empName, String empNo, String email, String phone, String departmentTitle,
+		String jobName, int salary, Date hireDate) {
+	super();
+	this.empId = empId;
+	this.empName = empName;
+	this.empNo = empNo;
+	this.email = email;
+	this.phone = phone;
+	this.departmentTitle = departmentTitle;
+	this.jobName = jobName;
+	this.salary = salary;
+	this.hireDate = hireDate;
+}
+
+
+	public Employee(int empId, String empName, int managerId, String managerName) {
+		super();
+		this.empId = empId;
+		this.empName = empName;
+		this.managerId = managerId;
+		this.managerName = managerName;
+	}
 
 	public int getEmpId() {
 		return empId;
@@ -154,14 +181,36 @@ public class Employee {
 	public void setManagerId(int managerId) {
 		this.managerId = managerId;
 	}
+	
+
+	public Date getHireDate() {
+		return hireDate;
+	}
+
+	public void setHireDate(Date hireDate) {
+		this.hireDate = hireDate;
+	}
+	
+	
+
+	public String getManagerName() {
+		return managerName;
+	}
+
+	public void setManagerName(String managerName) {
+		this.managerName = managerName;
+	}
 
 	@Override
 	public String toString() {
 		return "Employee [empId=" + empId + ", empName=" + empName + ", empNo=" + empNo + ", email=" + email
 				+ ", phone=" + phone + ", departmentTitle=" + departmentTitle + ", jobName=" + jobName + ", salary="
 				+ salary + ", deptCode=" + deptCode + ", jobCode=" + jobCode + ", salLevel=" + salLevel + ", bonus="
-				+ bonus + ", managerId=" + managerId + "]";
+				+ bonus + ", managerId=" + managerId + ", hireDate=" + hireDate + "]";
 	}
+
+	
+	
 
 	
 	
