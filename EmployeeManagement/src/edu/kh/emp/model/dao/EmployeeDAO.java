@@ -636,9 +636,9 @@ public class EmployeeDAO {
 	 * 
 	 * @return map
 	 */
-	public Map<String, Integer> selectJobAvgSalary() {
+	public Map<String, Double> selectJobAvgSalary() {
 		
-		Map<String, Integer> map = new LinkedHashMap();
+		Map<String, Double> map = new LinkedHashMap();
 		
 		try {
 			Class.forName(driver);
@@ -655,7 +655,7 @@ public class EmployeeDAO {
 			
 			while(rs.next()) {
 				String jobName = rs.getString("직급명");
-				Integer avgSalary = rs.getInt("평균급여");
+				Double avgSalary = rs.getDouble("평균급여");
 				
 				map.put(jobName, avgSalary);
 				

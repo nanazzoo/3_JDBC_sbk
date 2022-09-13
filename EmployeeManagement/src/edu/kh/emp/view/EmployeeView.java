@@ -381,13 +381,13 @@ public class EmployeeView {
 		
 		System.out.println("<직급별 급여 평균 조회>");
 		
-		Map<String, Integer> map = dao.selectJobAvgSalary();
+		Map<String, Double> map = dao.selectJobAvgSalary();
 		
 		System.out.println("    직급명   :  급여 평균     ");
 		System.out.println("-------------------------------");
 		for(String key : map.keySet()) {
-			Integer value = map.get(key);
-			System.out.printf("%10s : %10d \n", key, value);
+			Double value = map.get(key);
+			System.out.printf("%10s : %10.1f \n", key, value);
 		}
 		
 		
