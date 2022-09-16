@@ -5,9 +5,11 @@ package edu.kh.jdbc.model.service;
 import static edu.kh.jdbc.common.JDBCTemplate.*;
 
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.List;
 
 import edu.kh.jdbc.common.JDBCTemplate;
-import edu.kh.jdbc.model.dao.TestDao;
+import edu.kh.jdbc.model.dao.TestDAO;
 import edu.kh.jdbc.model.vo.TestVO;
 
 // Service: 비즈니스 로직(데이터 가공, 트랜잭션 제어)을 처리
@@ -24,13 +26,14 @@ import edu.kh.jdbc.model.vo.TestVO;
 
 public class TestService {
 
-	private TestDao dao = new TestDao();
+	private TestDAO dao = new TestDAO();
 	
 	/** 1행 삽입 서비스
 	 * @param vo1
 	 * @return result
+	 * @throws SQLException 
 	 */
-	public int insert(TestVO vo1) {
+	public int insert(TestVO vo1) throws SQLException {
 		
 //		커넥션 생성
 		Connection conn = getConnection();
@@ -52,6 +55,131 @@ public class TestService {
 		close(conn);
 		
 //		결과 반환
+		return result;
+	}
+	
+	
+
+	/** 3행 삽입 서비스
+	 * @param vo1
+	 * @param vo2
+	 * @param vo3
+	 * @return result
+	 */
+	public int insert(TestVO vo1, TestVO vo2, TestVO vo3) throws Exception {
+//		throws Exception
+//		-> 아래 catch문에서 강제 발생된 예외를 호출부로 던진다는 구문
+		
+//		왜 예외를 강제 발생 시켰는가?
+//		-> Run2에서 예외 상황에 대한 다른 결과를 구분해 출력하기 위해서
+		
+//		1. Connection 생성(무조건 1번!)
+		Connection conn = getConnection();
+		
+		int res = 0; // insert 3회 모두 성공 시 1, 아니면 0
+		
+		try {
+//			insert 중 오류가 발생하면 모든 insert 내용을 rollback
+//			 -> try-catch로 예외가 발생했다는 것을 인지함
+			
+			int result1 = dao.insert(conn, vo1);
+			int result2 = dao.insert(conn, vo2);
+			int result3 = dao.insert(conn, vo3);
+			
+//			트랜잭션 제어
+			if(result1+result2+result3 == 3) { //모두 insert 성공한 경우
+				commit(conn);
+				res = 1;
+			} else {
+				rollback(conn);
+			}
+			
+		} catch (SQLException e) { // dao 수행 중 예외 발생 시
+			rollback(conn); // 예외 앞에 실행 된 부분 모두 롤백
+			
+//			--> 실패된 데이터를 DB에 삽입하지 않으면
+//			--> DB에는 성공된 데이터만 저장이 된다
+//			    == DB에 저장된 데이터의 신뢰도가 상승한다.
+			
+			e.printStackTrace();
+			
+//			Run2 클래스로 예외를 전달할 수 있도록 예외 강제 발생
+			throw new Exception("DAO 수행 중 예외 발생");
+			
+		} finally { //무조건 conn 반환하기
+			close(conn);
+		}
+		
+		return res; // insert 3회 결과 반환
+	}
+
+
+
+
+
+	/** 입력받은 번호와 일치하는 행 수정
+	 * @param vo
+	 * @return result
+	 * @throws SQLException
+	 */
+	public int update(TestVO vo) throws SQLException {
+//		커넥션 생성
+		Connection conn = getConnection();
+		
+//		DAO의 update 메서드 호출하여 반환값을 result에 저장
+		int result = dao.update(conn, vo);
+		
+//		트랜잭션 제어
+		if(result > 0) commit(conn);
+		else rollback(conn);
+		
+//		커넥션 객체 반환
+		close(conn);
+		
+//		result 값 반환
+		return result;
+	}
+
+
+
+	/** 입력 받은 번호와 일치하는 행 삭제
+	 * @param testNo
+	 * @return result
+	 * @throws SQLException
+	 */
+	public int delete(int testNo) throws SQLException {
+		Connection conn = getConnection();
+		
+		int result = dao.delete(conn, testNo);
+		
+		if(result > 0) commit(conn);
+		else rollback(conn);
+		
+		close(conn);
+		
+		return result;
+	}
+
+
+
+	/** SELECT ALL
+	 * @return result
+	 * @throws SQLException
+	 */
+	public List<TestVO> select() throws SQLException {
+//		SELECT 결과 ResultSet을 저장할 리스트 변수 선언
+		List<TestVO> result = null;
+		
+//		커넥션 객체 생성
+		Connection conn = getConnection();
+				
+//		DAO의 select() 메서드 실행 후 결과 result 리스트에 반환
+		result = dao.select(conn);
+		
+//		커넥션 객체 반환
+		close(conn);
+		
+//		결과 리스트 리턴
 		return result;
 	}
 	
