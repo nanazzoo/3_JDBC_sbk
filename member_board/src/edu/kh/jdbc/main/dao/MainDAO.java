@@ -108,7 +108,61 @@ public class MainDAO {
 		
 		return result;
 	}
+
+
+
+	/** 로그인 DAO
+	 * @param conn
+	 * @param memberId
+	 * @param memberPw
+	 * @return loginMember
+	 * @throws Exception
+	 */
+	public Member login(Connection conn, String memberId, String memberPw) throws Exception {
+		Member loginMember = null;
+		
+		try {
+//			1. Properties에서 SQL 가져오기
+			String sql = prop.getProperty("login");
+			
+//			2. PreparedStatement 객체 생성하기
+			pstmt = conn.prepareStatement(sql);
+			
+//			3. ? 에 알맞은 값 대입
+			pstmt.setString(1, memberId);
+			pstmt.setString(2, memberPw);
+			
+//			4. SQL 수행 후 결과 반환 받기
+			rs = pstmt.executeQuery();
+			
+//			6. 조회 결과가 있을 경우 컬럼값을 모두 얻어와
+//			Member 객체를 생성해서 loginMember에 대입
+			if(rs.next()) {
+				loginMember = new Member();
+				
+				loginMember.setMemberNo(rs.getInt("MEMBER_NO"));
+				loginMember.setMemberId(rs.getString("MEMBER_ID"));
+				loginMember.setMemberName(rs.getString("MEMBER_NM"));
+				loginMember.setMemberGender(rs.getString("MEMBER_GENDER"));
+				loginMember.setEnrollDate(rs.getString("ENROLL_DATE"));
+			}
+			
+			
+		} finally {
+//			7. 사용한 JDBC 객체 자원 반환
+			close(rs);
+			close(pstmt);
+		}
+		
+//		8. 조회 결과 반환
+		return loginMember;
+	}
+
+
+
 	
+	
+
 	
 	
 	
