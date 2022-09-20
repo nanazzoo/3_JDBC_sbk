@@ -29,7 +29,7 @@ public class Member {
 	this.memberGender = memberGender;
 }
 
-	
+
 //	getter / setter
 	public int getMemberNo() {
 		return memberNo;
