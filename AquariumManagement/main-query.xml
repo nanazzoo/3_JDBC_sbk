@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+
+	<comment>main-query.xml file</comment>
+	
+	<!-- login -->
+	<entry key = "login">
+		SELECT MEMBER_NO, MEMBER_ID, MEMBER_NAME
+		FROM AR_MEMBER
+		WHERE MEMBER_ID = ?
+		AND MEMBER_PW = ?
+	</entry>
+	
+	
+	<!-- idDupCheck -->
+	<entry key = "idDupCheck">
+		SELECT COUNT(*)
+		FROM AR_MEMBER
+		WHERE MEMBER_ID = ?
+	</entry>
+	
+	
+	<!-- signUp -->
+	<entry key = "signUp">
+		INSERT INTO AR_MEMBER 
+		VALUES(SEQ_MEMBER_NO.NEXTVAL, ?, ?, ?, DEFAULT)
+	</entry>
+	
+	
+	<!-- tankInfo -->
+	<entry key = "tankInfo">
+		SELECT TANK_NO, TANK_NAME
+		FROM AR_TANK
+		WHERE MEMBER_NO = ?
+	</entry>
+	
+	
+</properties>
