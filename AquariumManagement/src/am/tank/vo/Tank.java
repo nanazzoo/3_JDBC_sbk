@@ -9,6 +9,7 @@ public class Tank {
 	private String tankFilter;
 	private String tankAddictive;
 	private String tankSubstrate;
+	private int tankMate;
 	
 	public Tank() {
 		// TODO Auto-generated constructor stub
@@ -88,6 +89,15 @@ public class Tank {
 
 	public void setTankSubstrate(String tankSubstrate) {
 		this.tankSubstrate = tankSubstrate;
+	}
+	
+
+	public int getTankMate() {
+		return tankMate;
+	}
+
+	public void setTankMate(int tankMate) {
+		this.tankMate = tankMate;
 	}
 
 	@Override

@@ -4,11 +4,14 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+import am.member.model.service.MemberService;
 import am.member.model.vo.Member;
 import am.tank.vo.Tank;
 
 public class MemberView {
 	private Scanner sc = new Scanner(System.in);
+	
+	private MemberService service = new MemberService();
 	
 	int input = -1;
 	
@@ -17,19 +20,30 @@ public class MemberView {
 		try {
 			System.out.println("\n*** 내 어항 ***\n");
 			
-//			List<Tank> myAquarium = service.myAquarium(loginMember.getMemberNo());
+			List<Tank> myAquarium = service.selectMyTank(loginMember.getMemberNo(), tankNo);
 			
 			
-//			if(myAquarium.isEmpty()) {
-//				System.out.println("\n[등록된 어항이 없습니다.]\n");
-//			} else {
-//				System.out.println("| 번호 | 해수/담수 | 어항 크기 | 조명 | 여과 장치 | 첨가제 | 바닥재 |");
-//				for(Tank t : myAquarium) {
-//					System.out.printf("| %d | %10s | %10s | %10s | %10s | %10s | %10s |"
-//							, t.getTankNo(), t.getFreshSalt(), t.getTankSize(), t.getTankLight()
-//							, t.getTankFilter(), t.getTankAddictive(), t.getTankSubstrate());
-//				}
-//			}
+			if(myAquarium.isEmpty()) {
+				System.out.println("\n[등록된 어항이 없습니다.]\n");
+			} else {
+				for(Tank t : myAquarium) {	
+					System.out.println(t.getTankNo() + ". " + t.getTankName());
+					System.out.println();
+					
+					if(t.getFreshSalt().contains("S")) {
+						System.out.println("해수 어항");
+					} else {
+						System.out.println("담수 어항");
+					}
+					System.out.println("생물수   : 총 " + + t.getTankMate() + "마리");
+					System.out.println("어항 크기: " +  t.getTankSize());
+					System.out.println("조명     : " + t.getTankLight());
+					System.out.println("여과 방식: " + t.getTankFilter());
+					System.out.println("첨가제   : " + t.getTankAddictive());
+					System.out.println("바닥재   : " + t.getTankSubstrate());
+					System.out.println();
+				}
+			}
 //			
 			
 		} catch (Exception e) {

@@ -5,7 +5,7 @@ import static am.common.JDBCTemplate.*;
 import java.sql.Connection;
 import java.util.List;
 
-import am.main.dao.AquariumDAO;
+import am.main.model.dao.AquariumDAO;
 import am.member.model.vo.Member;
 import am.tank.vo.Tank;
 
@@ -67,22 +67,6 @@ public class AquariumService {
 		return result;
 	}
 
-
-
-	/** 어항 정보 Service
-	 * @param memberNo
-	 * @return myTank
-	 * @throws Exception
-	 */
-	public List<Tank> myAquarium(int memberNo) throws Exception {
-		Connection conn = getConnection();
-		
-		List<Tank> myAquarium = dao.myAquarium(conn, memberNo);
-		
-		close(conn);
-		
-		return myAquarium;
-	}
 
 
 

@@ -29,14 +29,22 @@
 		]]>
 	</entry>
 	
-	<!--  -->
-	<entry key="">
-	
+	<!-- selectBoard -->
+	<entry key="selectBoard">
+		SELECT BOARD_NO, BOARD_TITLE, BOARD_CONTENT,
+			   MEMBER_NO, MEMBER_NM, READ_COUNT,
+			   TO_CHAR(CREATE_DT, 'YYYY-MM-DD HH24:MI:SS') CREATE_DT
+		FROM BOARD
+		JOIN MEMBER USING(MEMBER_NO)
+		WHERE DELETE_FL = 'N'
+		AND BOARD_NO = ?
 	</entry>
 	
-	<!--  -->
-	<entry key="">
-	
+	<!-- increaseReadCount -->
+	<entry key="increaseReadCount">
+		UPDATE BOARD SET 
+		READ_COUNT = READ_COUNT + 1 
+		WHERE BOARD_NO = ?
 	</entry>
 	
 	<!--  -->

@@ -1,4 +1,4 @@
-package am.main.dao;
+package am.main.model.dao;
 
 import static am.common.JDBCTemplate.*;
 
@@ -129,34 +129,9 @@ public class AquariumDAO {
 	}
 
 
-	public List<Tank> myTank(Connection conn, int memberNo) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 
-	/** 어항 정보 DAO
-	 * @param conn
-	 * @param memberNo
-	 * @return myAquarium
-	 * @throws Exception
-	 */
-	public List<Tank> myAquarium(Connection conn, int memberNo) throws Exception {
-		List<Tank> myAquarium = null;
-		
-		try {
-			String sql = prop.getProperty("myAquarium");
-			
-			
-			
-			
-		} finally {
-			
-		}
-		
-		
-		return myAquarium;
-	}
+	
 
 
 	/** 어항 번호, 이름 조회 DAO
