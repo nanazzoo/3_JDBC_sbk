@@ -6,7 +6,7 @@ import java.sql.Connection;
 import java.util.List;
 
 import am.main.model.dao.AquariumDAO;
-import am.member.model.vo.Member;
+import am.member.vo.Member;
 import am.tank.vo.Tank;
 
 public class AquariumService {

@@ -74,4 +74,37 @@ public class MemberDAO {
 		return myTank;
 	}
 
+	/** 어항 정보 수정 DAO
+	 * @param conn
+	 * @param columnNm
+	 * @param content
+	 * @return result
+	 * @throws Exception
+	 */
+	public int updateTank(Connection conn, int input, String content, int tankNo) throws Exception {
+		int result = 0;
+		
+		try {
+			String sql = prop.getProperty("updateTank");
+			
+			
+			pstmt = conn.prepareStatement(sql);
+			if(input == 1) pstmt.setString(1, "TANK_NAME");
+			if(input == 2) pstmt.setString(1, "TANK_LIGHT");
+			if(input == 3) pstmt.setString(1, "TANK_ADDICTIVE");
+			if(input == 4) pstmt.setString(1, "TANK_SUBSTRATE");
+			pstmt.setString(2, content);
+			pstmt.setInt(3, tankNo);
+			
+			result = pstmt.executeUpdate();
+								
+		} finally {
+			close(pstmt);
+		}
+		
+		
+		return result;
+		
+	}
+
 }

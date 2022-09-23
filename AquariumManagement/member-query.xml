@@ -12,5 +12,12 @@
 		WHERE MEMBER_NO = ? AND TANK_NO = ?
 	</entry>
 	
+	<!-- 어항 정보 수정 -->
+	<entry key = "updateTank">
+		UPDATE AR_TANK SET
+		? = ?
+		WHERE TANK_NO = ?
+	</entry>
+	
 
 </properties>

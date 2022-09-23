@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Scanner;
 
 import am.main.model.service.AquariumService;
-import am.member.model.vo.Member;
 import am.member.view.MemberView;
+import am.member.vo.Member;
 import am.tank.vo.Tank;
 
 public class AquariumView {

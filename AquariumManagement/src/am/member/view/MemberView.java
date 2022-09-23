@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import am.member.model.service.MemberService;
-import am.member.model.vo.Member;
+import am.member.vo.Member;
 import am.tank.vo.Tank;
 
 public class MemberView {
@@ -69,7 +69,7 @@ public class MemberView {
 				System.out.println();
 				
 				switch(input) {
-				case 1: ; break;
+				case 1: updateTank(tankNo); break;
 				case 2: ; break;
 				case 3: ; break;
 				case 4: ; break;
@@ -81,6 +81,46 @@ public class MemberView {
 			}
 			
 		} while (input != 0);
+		
+	}
+
+
+	/** 어항 정보 수정
+	 * @param tankNo
+	 */
+	private void updateTank(int tankNo) {
+		
+		try {
+			System.out.println("\n[어항 정보 수정]\n");
+			
+			System.out.println("1. 어항 이름");
+			System.out.println("2. 어항 조명");
+			System.out.println("3. 어항 첨가제");
+			System.out.println("4. 어항 바닥재");
+			
+			System.out.print("\n메뉴 선택 >> ");
+			int input = sc.nextInt();
+			
+			
+			System.out.print("변경할 내용 입력: ");
+			String content = sc.next();
+			
+			int result = service.updateTank(input, content, tankNo);
+			
+			
+			if(result > 0) {
+				System.out.println("\n[수정 완료]\n");
+			} else {
+				System.out.println("\n[수정 실패]\n");
+				
+			}
+			
+			
+		} catch (Exception e) {
+			System.out.println("\n[어항 정보 수정 중 오류가 발생했습니다.]\n");
+			e.printStackTrace();
+		}
+		
 		
 	}
 

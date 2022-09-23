@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import am.member.model.vo.Member;
+import am.member.vo.Member;
 import am.tank.vo.Tank;
 
 

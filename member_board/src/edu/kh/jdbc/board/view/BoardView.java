@@ -125,8 +125,8 @@ public class BoardView {
 	             }
 	             
 	             // 댓글 등록, 수정, 삭제
-	             // 수정/삭제 메뉴
-//	             subBoardMenu(board);
+	             // 게시글 수정/삭제 메뉴
+	             subBoardMenu(board);
 	             
 	             
 	          } else {
@@ -135,14 +135,100 @@ public class BoardView {
 			
 			
 		} catch (Exception e) {
-			System.out.println("\\n<<게시글 상세 조회 중 예외 발생>>\\n");
+			System.out.println("\n<<게시글 상세 조회 중 예외 발생>>\n");
 			e.printStackTrace();
 		}
 		
 	}
+
 	
 	
+	/** 게시글 상세조회 시 출력되는 서브 메뉴
+	 * @param board(상세조회된 게시글 + 작성자 번호 + 댓글목록)
+	 */
+	private void subBoardMenu(Board board) {
+		
+		try {
+			System.out.println("1) 댓글 등록");
+			System.out.println("2) 댓글 수정");
+			System.out.println("3) 댓글 삭제");
+			System.out.println("0) 게시판 메뉴로 돌아가기");
+			
+			System.out.println("\n서브 메뉴 선택 >>");
+			int input = sc.nextInt();
+			sc.nextLine();
+			
+//			로그인한 회원의 회원 번호
+			int memberNo = MainView.loginMember.getMemberNo();
+			
+			System.out.println();
+			switch (input) {
+			case 1: insertComment(board.getBoardNo(), memberNo); break;
+			case 2:  break;
+			case 3:  break;
+			case 0: System.out.println("\n[게시판 메뉴로 돌아갑니다.]\n"); break;
+			default: System.out.println("\n[메뉴에 작성된 번호만 입력해주세요.]\n");
+			}
+			System.out.println();
+			
+			
+			
+		} catch (InputMismatchException e) {
+			System.out.println("\n<<입력 형식이 올바르지 않습니다.>>");
+			sc.nextLine();
+		}
 	
+		
+	}
+
+
+	/** 댓글 등록 화면
+	 * @param boardNo
+	 * @param memberNo
+	 */
+	private void insertComment(int boardNo, int memberNo) {
+		
+		try {
+			System.out.println("\n[댓글 등록]\n");
+			
+			String content = ""; //빈 문자열
+			
+			String input = null; // 참조하는 객체가 없음
+			
+			System.out.println("입력 종료 시 ($exit) 입력");
+			
+			while(true) {
+				input = sc.nextLine();
+				
+				if(input.equals("$exit")) {
+					break;
+				}
+				
+//				입력된 내용을 content에 누적
+				content += input + "\n";
+				
+			}
+			
+//			DB INSERT 시 필요한 값을 하나의 Comment 객체에 저장
+			Comment comment = new Comment();
+			comment.setCommentContent(content);
+			comment.setBoardNo(boardNo);
+			comment.setMemberNo(memberNo);
+			
+			int result = cService.insertComment(comment);
+			
+			if(result > 0) {
+				System.out.println("\n[댓글 등록 완료]\n");
+			} else {
+				System.out.println("\n[댓글 등록 실패]\n");
+			}
+				
+		} catch (Exception e) {
+			System.out.println("\n<<댓글 등록 중 예외 발생>>\n");
+			e.printStackTrace();
+		}
+		
+	}
 	
 	
 	
