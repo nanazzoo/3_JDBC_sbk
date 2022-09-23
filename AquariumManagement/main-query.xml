@@ -6,7 +6,7 @@
 	
 	<!-- login -->
 	<entry key = "login">
-		SELECT MEMBER_NO, MEMBER_ID, MEMBER_NAME
+		SELECT MEMBER_NO, MEMBER_ID, MEMBER_NM
 		FROM AR_MEMBER
 		WHERE MEMBER_ID = ?
 		AND MEMBER_PW = ?
@@ -33,7 +33,26 @@
 		SELECT TANK_NO, TANK_NAME
 		FROM AR_TANK
 		WHERE MEMBER_NO = ?
+		AND DELETE_FL = 'N'
 	</entry>
+	
+	<!-- maxTankNo -->
+	<entry key = "maxTankNo">
+		SELECT MAX(TANK_NO)
+		FROM AR_TANK
+		WHERE MEMBER_NO = ?
+		AND DELETE_FL = 'N'
+	</entry>
+	
+	<!-- insertTank -->
+	<entry key = "insertTank">
+		INSERT INTO AR_TANK 
+		VALUES(?, ?, ?, ?, ?, ?, ?
+		, ?, ?, DEFAULT)
+
+	</entry>
+	
+	
 	
 	
 </properties>

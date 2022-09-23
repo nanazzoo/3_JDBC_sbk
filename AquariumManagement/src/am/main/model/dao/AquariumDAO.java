@@ -59,7 +59,7 @@ public class AquariumDAO {
 			
 			if(rs.next()) {
 				loginMember = new Member(rs.getInt("MEMBER_NO"),
-						memberId, rs.getString("MEMBER_NAME"));
+						memberId, rs.getString("MEMBER_NM"));
 										
 			}
 		} finally {
@@ -168,6 +168,101 @@ public class AquariumDAO {
 		
 		
 		return tankInfo;
+	}
+
+
+	/** 가장 큰 어항번호 DAO
+	 * @param conn
+	 * @param memberNo
+	 * @return maxTankNo
+	 * @throws Exception
+	 */
+	public int maxTankNo(Connection conn, int memberNo) throws Exception {
+		int maxTankNo = 0;
+		
+		try {
+			String sql = prop.getProperty("maxTankNo");
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, memberNo);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				maxTankNo = rs.getInt(1);
+			}
+			
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		
+		return maxTankNo;
+	}
+
+
+	/** 새 어항 등록 DAO
+	 * @param conn
+	 * @param tank
+	 * @param maxTankNo
+	 * @return result
+	 * @throws Exception
+	 */
+	public int insertTank(Connection conn, Tank tank, int maxTankNo) throws Exception {
+		int result = 0;
+		
+		try {
+			String sql = prop.getProperty("insertTank");
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, tank.getMemberNo());
+			
+			if(maxTankNo == 0) {
+				maxTankNo = 1;
+				pstmt.setInt(2, maxTankNo);
+			}
+			
+			if(maxTankNo > 0) {
+				maxTankNo = maxTankNo+1;
+				pstmt.setInt(2, maxTankNo);
+			}
+			
+			pstmt.setString(3, tank.getTankName());
+			pstmt.setString(4, tank.getFreshSalt());
+			pstmt.setString(5, tank.getTankSize());
+			pstmt.setString(6, tank.getTankFilter());
+			pstmt.setString(7, tank.getTankLight());
+			pstmt.setString(8, tank.getTankAddictive());
+			pstmt.setString(9, tank.getTankSubstrate());
+			
+			result = pstmt.executeUpdate();
+			
+			
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+
+	/** 어항 번호 조회용 어항 목록
+	 * @param conn
+	 * @param memberNo
+	 * @return tankList
+	 * @throws Exception
+	 */
+	public List<Tank> tankList(Connection conn, int memberNo) throws Exception {
+		List<Tank> tankList = new ArrayList<>();
+		
+		try {
+			
+		} finally {
+			// TODO: handle finally clause
+		}
+		
+		return tankList;
 	}
 	
 	

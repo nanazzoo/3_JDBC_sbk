@@ -80,4 +80,76 @@ public class AquariumService {
 		return tankInfo;
 	}
 
+
+
+	/** 가장 큰 탱크번호 조회
+	 * @param memberNo
+	 * @return maxTankNo
+	 * @throws Exception
+	 */
+	public int maxTankNo(int memberNo) throws Exception {
+		Connection conn = getConnection();
+		
+		int maxTankNo = dao.maxTankNo(conn, memberNo);
+		
+		close(conn);
+		
+		return maxTankNo;
+	}
+
+
+
+	/** 새 어항 등록 서비스
+	 * @param tank
+	 * @param maxTankNo
+	 * @return result
+	 * @throws Exception
+	 */
+	public int insertTank(Tank tank, int maxTankNo) throws Exception {
+		Connection conn = getConnection();
+		
+		int result = dao.insertTank(conn, tank, maxTankNo);
+		
+		if(result > 0) commit(conn);
+		else rollback(conn);
+		
+		return result;
+	}
+
+
+
+	/** 어항 번호 검사위한 어항 목록 조회
+	 * @param memberNo
+	 * @return
+	 * @throws Exception
+	 */
+	public List<Tank> tankList(int memberNo) throws Exception {
+		Connection conn = getConnection();
+		
+		List<Tank> tankList = dao.tankList(conn, memberNo);
+		
+		close(conn);
+		
+		return tankList;
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

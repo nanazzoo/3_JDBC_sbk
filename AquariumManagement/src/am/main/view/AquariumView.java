@@ -16,7 +16,8 @@ public class AquariumView {
 	private Scanner sc = new Scanner(System.in);
 	int input = -1;
 	
-	private Member loginMember = null;
+	public static Member loginMember = null;
+	private List<Tank> tankInfo;
 
 	public void mainMenu() {
 		
@@ -47,7 +48,6 @@ public class AquariumView {
 					System.out.println("\n 어항 관리 메뉴 \n");
 					
 //					어항 번호 | 어항 이름 목록
-					List<Tank> tankInfo;
 					try {
 						tankInfo = service.tankInfo(loginMember);
 						
@@ -68,6 +68,7 @@ public class AquariumView {
 					System.out.println();
 					System.out.println("1. 내 어항 선택");
 					System.out.println("2. 새 어항 추가");
+					System.out.println("3. 물량 계산기");
 					System.out.println("3. 로그아웃");
 					System.out.println("0. 프로그램 종료");
 					
@@ -78,8 +79,9 @@ public class AquariumView {
 					
 					switch(input) {
 					case 1: selectTank(); break;
-					case 2: newAquarium(); break;
-					case 3: loginMember = null; break;
+					case 2: insertTank(); break;
+					case 3: waterCalculator(); break;
+					case 4: loginMember = null; break;
 					case 0: System.out.println("[프로그램을 종료합니다.]"); break;
 					default: System.out.println("메뉴에 있는 번호만 입력해주세요.");
 					}
@@ -211,20 +213,124 @@ public class AquariumView {
 		System.out.print("어항 번호: ");
 		int tankNo = sc.nextInt();
 		
-		memberView.memberMenu(loginMember, tankNo);
+		for(Tank t : tankInfo) {
+			if(t.getTankNo() == tankNo) {
+				memberView.memberMenu(loginMember, tankNo);
+				break;
+			} 
+		}
+		System.out.println("\n번호가 일치하는 어항이 없습니다.\n");
 		
 	}
 	
 	
 	
-	
-	
-	private void newAquarium() {
+	/** 
+	 * 새 어항 추가
+	 */
+	private void insertTank() {
+		try {
+			System.out.println("\n[새 어항 추가]\n");
+			
+			int memberNo = loginMember.getMemberNo();
+			
+			int maxTankNo = service.maxTankNo(memberNo);
+			
+			
+			System.out.print("어항 이름: ");
+			String tankName = sc.nextLine();
+			
+			String freshSalt = null;
+			while(true) {
+				System.out.print("해수/담수 여부(S/F): ");
+				freshSalt = sc.next().toUpperCase();
+				sc.nextLine();
+				
+				if(freshSalt.equals("S") || freshSalt.equals("F")) {
+					break;
+				} else {
+					System.out.println("S 또는 F만 입력 가능합니다.");
+				}
+			}
+			
+			System.out.print("어항 크기: ");
+			String tankSize = sc.nextLine();
+			
+			System.out.print("여과 방식: ");
+			String tankFilter = sc.nextLine();
+			
+			System.out.print("어항 조명: ");
+			String tankLight = sc.nextLine();
+			
+			System.out.print("어항 첨가제: ");
+			String tankAddictive = sc.nextLine();
+			
+			System.out.print("어항 바닥재: ");
+			String tankSubstrate = sc.nextLine();
+			
+			Tank tank = new Tank(memberNo, tankName, freshSalt, tankSize, tankFilter, tankLight, tankAddictive, tankSubstrate);
+			
+			
+			int result = service.insertTank(tank, maxTankNo);
+			
+			if(result > 0) {
+				System.out.println("\n[어항 등록 완료]\n");
+			} else {
+				System.out.println("\n[어항 등록 실패]\n");
+				
+			}
+			
+		} catch (Exception e) {
+			System.out.println("\n[어항 추가 중 예외 발생]\n");
+			e.printStackTrace();
+		}
 		
 		
 		
 	}
 	
+	private void waterCalculator() {
+		System.out.println("\n[물량 계산기]\n");
+		
+		int input = -1;
+		
+		System.out.println("1. 하단 섬프");
+		System.out.println("2. 내부 배면, 탱크항");
+		
+		System.out.print("메뉴 선택 >> ");
+		input = sc.nextInt();
+		sc.nextLine();
+		
+		System.out.print("가로(cm): ");
+		int width = sc.nextInt();
+		System.out.print("세로(cm): ");
+		int length = sc.nextInt();
+		System.out.print("높이(cm): ");
+		int height = sc.nextInt();
+		
+		double result = 0;
+		
+		switch(input) {
+		case 1: 
+			System.out.print("섬프 가로(cm): ");
+			int sumpWidth = sc.nextInt();
+			System.out.print("섬프 세로(cm): ");
+			int sumpLength = sc.nextInt();
+			System.out.print("섬프 높이(cm): ");
+			int sumpHeight = sc.nextInt();
+			
+			result = (((width*length*height)/1000)*0.9) + (((sumpWidth*sumpLength*sumpHeight)/1000)*0.9);
+			break;
+		
+		case 2: 
+			result = (((width*length*height)/1000)*0.9);
+			break;
+		default:
+		}
+		
+		System.out.println("물량: " + result + "L");
+		
+	}
 	
 	
 

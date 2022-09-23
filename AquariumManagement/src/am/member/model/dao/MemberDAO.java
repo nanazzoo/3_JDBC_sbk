@@ -81,20 +81,22 @@ public class MemberDAO {
 	 * @return result
 	 * @throws Exception
 	 */
-	public int updateTank(Connection conn, int input, String content, int tankNo) throws Exception {
+	public int updateTank(Connection conn, int input, String content, Tank tank) throws Exception {
 		int result = 0;
 		
 		try {
-			String sql = prop.getProperty("updateTank");
+			String sql = null;
+			if(input == 1) sql = prop.getProperty("updateTankNm");
+			if(input == 2) sql = prop.getProperty("updateTankLight");
+			if(input == 3) sql = prop.getProperty("updateTankAdd");
+			if(input == 4) sql = prop.getProperty("updateTankSub");
 			
 			
 			pstmt = conn.prepareStatement(sql);
-			if(input == 1) pstmt.setString(1, "TANK_NAME");
-			if(input == 2) pstmt.setString(1, "TANK_LIGHT");
-			if(input == 3) pstmt.setString(1, "TANK_ADDICTIVE");
-			if(input == 4) pstmt.setString(1, "TANK_SUBSTRATE");
-			pstmt.setString(2, content);
-			pstmt.setInt(3, tankNo);
+			
+			pstmt.setString(1, content);
+			pstmt.setInt(2, tank.getTankNo());
+			pstmt.setInt(3, tank.getMemberNo());
 			
 			result = pstmt.executeUpdate();
 								
@@ -105,6 +107,31 @@ public class MemberDAO {
 		
 		return result;
 		
+	}
+
+	/** 어항 삭제
+	 * @param conn
+	 * @param tankNo
+	 * @return result
+	 * @throws Exception
+	 */
+	public int deleteTank(Connection conn, int tankNo) throws Exception {
+		int result = 0;
+		
+		try {
+			String sql = prop.getProperty("deleteTank");
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, tankNo);
+			
+			result = pstmt.executeUpdate();
+					
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
 	}
 
 }

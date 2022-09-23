@@ -9,15 +9,49 @@
 		SELECT TANK_NO 번호, TANK_NAME 이름, FRESH_SALT "해수/담수", TANK_SIZE "어항 크기" , TANK_LIGHT "조명", TANK_FILTER "여과 장치" 
 		, TANK_ADDICTIVE 첨가제 , TANK_SUBSTRATE 바닥재, (SELECT COUNT(*) FROM AR_LIVESTOCK L WHERE L.TANK_NO = T.TANK_NO) 생물수
 		FROM AR_TANK T
-		WHERE MEMBER_NO = ? AND TANK_NO = ?
+		WHERE MEMBER_NO = ? AND TANK_NO = ? AND DELETE_FL = 'N'
 	</entry>
 	
-	<!-- 어항 정보 수정 -->
-	<entry key = "updateTank">
+	<!-- 어항 이름 수정 -->
+	<entry key = "updateTankNm">
 		UPDATE AR_TANK SET
-		? = ?
-		WHERE TANK_NO = ?
+		TANK_NAME = ?
+		WHERE TANK_NO = ? 
+		AND MEMBER_NO = ?
 	</entry>
+	
+	<!-- 어항 조명 수정 -->
+	<entry key = "updateTankLight">
+		UPDATE AR_TANK SET
+		TANK_LIGHT = ?
+		WHERE TANK_NO = ? 
+		AND MEMBER_NO = ?
+	</entry>
+	
+	<!-- 어항 첨가제 수정 -->
+	<entry key = "updateTankAdd">
+		UPDATE AR_TANK SET
+		TANK_ADDICTIVE = ?
+		WHERE TANK_NO = ? 
+		AND MEMBER_NO = ?
+	</entry>
+	
+	<!-- 어항 바닥재 수정 -->
+	<entry key = "updateTankSub">
+		UPDATE AR_TANK SET
+		TANK_SUBSTRATE = ?
+		WHERE TANK_NO = ? 
+		AND MEMBER_NO = ?
+	</entry>
+	
+	<!-- 어항 삭제 -->
+	<entry key = "deleteTank">
+		UPDATE AR_TANK SET
+		DELETE_FL = 'Y'
+		WHERE TANK_NO = ? 
+	</entry>
+	
+	
 	
 
 </properties>

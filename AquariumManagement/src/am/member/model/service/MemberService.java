@@ -36,10 +36,31 @@ public class MemberService {
 	 * @return result
 	 * @throws Exception
 	 */
-	public int updateTank(int input, String content, int tankNo) throws Exception {
+	public int updateTank(int input, String content, Tank tank) throws Exception {
 		Connection conn = getConnection();
 		
-		int result = dao.updateTank(conn, input, content, tankNo);
+		int result = dao.updateTank(conn, input, content, tank);
+		
+		if(result > 0) commit(conn);
+		else rollback(conn);
+		
+		close(conn);
+		
+		return result;
+	}
+
+
+
+	
+	/** 어항 삭제 서비스
+	 * @param tankNo
+	 * @return result
+	 * @throws Exception
+	 */
+	public int deleteTank(int tankNo) throws Exception {
+		Connection conn = getConnection();
+		
+		int result = dao.deleteTank(conn, tankNo);
 		
 		if(result > 0) commit(conn);
 		else rollback(conn);

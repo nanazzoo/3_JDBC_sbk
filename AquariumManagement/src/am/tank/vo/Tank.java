@@ -1,6 +1,7 @@
 package am.tank.vo;
 
 public class Tank {
+	private int memberNo;
 	private int tankNo;
 	private String tankName;
 	private String freshSalt;
@@ -15,16 +16,27 @@ public class Tank {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Tank(int tankNo, String freshSalt, String tankSize, String tankLight, String tankFilter,
+	public Tank(int memberNo, String tankName, String freshSalt, String tankSize, String tankLight, String tankFilter,
 			String tankAddictive, String tankSubstrate) {
 		super();
-		this.tankNo = tankNo;
+		this.memberNo = memberNo;
+		this.tankName = tankName;
 		this.freshSalt = freshSalt;
 		this.tankSize = tankSize;
 		this.tankLight = tankLight;
 		this.tankFilter = tankFilter;
 		this.tankAddictive = tankAddictive;
 		this.tankSubstrate = tankSubstrate;
+	}
+	
+	
+
+	public int getMemberNo() {
+		return memberNo;
+	}
+
+	public void setMemberNo(int memberNo) {
+		this.memberNo = memberNo;
 	}
 
 	public int getTankNo() {
