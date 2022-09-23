@@ -60,7 +60,7 @@ public class LivestockView {
 				
 				switch(input) {
 				case 1: insertLivestock(tankNo); break;
-				case 2: ; break;
+				case 2: updateLivestock(tankNo); break;
 				case 3: ; break;
 				case 0: break;
 				default: System.out.println("메뉴에 있는 번호만 입력해주세요.");
@@ -75,6 +75,8 @@ public class LivestockView {
 		
 		
 	}
+
+	
 
 	/** 생물 등록
 	 * @param tankNo
@@ -135,4 +137,110 @@ public class LivestockView {
 		
 		
 	}
+	
+	
+	
+	/** 생물 정보 수정 
+	 * @param tankNo
+	 */
+	private void updateLivestock(int tankNo) {
+		try {
+			int input = -1;	
+			String livestockGender = null;
+			String lifeOrDie = null;
+			
+			System.out.println("\n[생물 정보 수정]\n");
+			
+			System.out.println("\n수정할 생물 번호 입력>> ");
+			int livestockNo = sc.nextInt();
+			
+			System.out.println("\n[수정할 내용 선택]\n");
+			System.out.println("1. 이름");
+			System.out.println("2. 가격");
+			System.out.println("3. 성별");
+			System.out.println("4. 생사 여부");
+			System.out.println("0. 취소");
+			
+			System.out.print("\n번호 입력 >> ");
+			input = sc.nextInt();
+			sc.nextLine();
+			
+			Livestock livestock = new Livestock();
+			livestock.setTankNo(tankNo);
+			livestock.setMemberNo(AquariumView.loginMember.getMemberNo());
+			
+			System.out.println();
+			switch (input) {
+			case 1:
+				System.out.print("수정할 이름: ");
+				String livestockName = sc.nextLine();
+				sc.nextLine();
+				livestock.setLivestockName(livestockName);
+				break;
+			case 2:
+				System.out.print("수정할 가격: ");
+				int livestockPrice = sc.nextInt();
+				sc.nextLine();
+				livestock.setLivestockPrice(livestockPrice);
+				break;
+			case 3:
+				while(true) {
+					System.out.print("수정할 성별(M/F/모를 시 N): ");
+					livestockGender = sc.next().toUpperCase();
+					sc.nextLine();
+					
+					if(livestockGender.equals("S") || livestockGender.equals("F") || livestockGender.equals("N")) {
+						break;
+					} else {
+						System.out.println("S 또는 F 또는 N만 입력 가능합니다.");
+					}
+				}
+				livestock.setLivestockGender(livestockGender);
+				
+				break;
+			case 4:
+				while(true) {
+					System.out.print("생사 여부(L/D): ");
+					lifeOrDie = sc.next().toUpperCase();
+					sc.nextLine();
+					if(lifeOrDie.equals("L") || lifeOrDie.equals("D")) {
+						break;
+					} else {
+						System.out.println("L 또는 D만 입력 가능합니다.");
+					}
+				}
+				livestock.setLifeOrDie(lifeOrDie);
+				break;
+			case 0: break;
+
+			default: System.out.println("\n[메뉴에 있는 번호만 입력해주세요.]\n"); break;
+			}
+			System.out.println();
+			
+			int result = service.updateLivestock(livestock, input);
+			
+			if(result > 0) {
+				System.out.println("\n[생물 정보 수정 완료]\n");
+			} else {
+				System.out.println("\n[생물 정보 수정 실패]\n");
+				
+			}
+			
+			
+			
+		} catch (Exception e) {
+			System.out.println("\n[생물 정보 수정 중 예외 발생]\n");
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

@@ -9,6 +9,7 @@ public class Livestock {
 	private int livestockPrice;
 	private String livestockGender;
 	private String dateOfPurchase;
+	private String lifeOrDie;
 	
 	public Livestock() {
 		// TODO Auto-generated constructor stub
@@ -80,9 +81,18 @@ public class Livestock {
 	public void setDateOfPurchase(String dateOfPurchase) {
 		this.dateOfPurchase = dateOfPurchase;
 	}
-
-
 	
+	public String getLifeOrDie() {
+		return lifeOrDie;
+	}
+
+	public void setLifeOrDie(String lifeOrDie) {
+		this.lifeOrDie = lifeOrDie;
+	}
+
+
+
+
 	@Override
 	public String toString() {
 		return "Livestock [memberNo=" + memberNo + ", tankNo=" + tankNo + ", livestockNo=" + livestockNo

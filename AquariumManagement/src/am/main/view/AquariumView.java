@@ -67,6 +67,9 @@ public class AquariumView {
 					
 					System.out.println();
 					System.out.println("1. 내 어항 선택");
+//					어항 추가할 때 어항 번호 자동 생성하는 SQL 구문에서
+//					MAX(TANK_NO) 조회할 때 추가하려는 어항이 첫 어항이면
+//					MAX(TANK_NO)가 NULL로 나오기 때문에 SQL구문 수정해야함.
 					System.out.println("2. 새 어항 추가");
 					System.out.println("3. 물량 계산기");
 					System.out.println("3. 로그아웃");

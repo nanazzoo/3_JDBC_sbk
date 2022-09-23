@@ -60,4 +60,37 @@ public class LivestockService {
 		return result;
 	}
 
+	
+	
+	/** 생물 정보 수정 서비스
+	 * @param livestock
+	 * @return result
+	 * @throws Exception
+	 */
+	public int updateLivestock(Livestock livestock, int input) throws Exception {
+		Connection conn = getConnection();
+		
+		int result = dao.updateLivestock(conn, livestock, input);
+		
+		if(result > 0) commit(conn);
+		else rollback(conn);
+		
+		return result;
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

@@ -26,6 +26,38 @@
 
 	</entry>
 	
+	<!-- 생물 이름 수정 -->
+	<entry key = "updateName">
+		UPDATE AR_LIVESTOCK SET
+		LIVESTOCK_NM = ?
+		WHERE MEMBER_NO = ?
+		AND TANK_NO = ?
+	</entry>
+	
+	<!-- 생물 가격 수정 -->
+	<entry key = "updatePrice">
+		UPDATE AR_LIVESTOCK SET
+		LIVESTOCK_PRICE = ?
+		WHERE MEMBER_NO = ?
+		AND TANK_NO = ?
+	</entry>
+	
+	<!-- 생물 성별 수정 -->
+	<entry key = "updateGender">
+		UPDATE AR_LIVESTOCK SET
+		LIVESTOCK_GENDER = ?
+		WHERE MEMBER_NO = ?
+		AND TANK_NO = ?
+	</entry>
+	
+	<!-- 생물 생사 여부 수정 -->
+	<entry key = "updateLifeOrDie">
+		UPDATE AR_LIVESTOCK SET
+		LIFE_OR_DIE_FL = ?
+		WHERE MEMBER_NO = ?
+		AND TANK_NO = ?
+	</entry>
+	
 	
 
 </properties>

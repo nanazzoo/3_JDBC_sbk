@@ -156,4 +156,40 @@ public class LivestockDAO {
 		
 		return result;
 	}
+
+ 
+	/** 생물 정보 수정 DAO
+	 * @param conn
+	 * @param livestock
+	 * @return result
+	 * @throws Exception
+	 */
+	public int updateLivestock(Connection conn, Livestock livestock, int input) throws Exception {
+		int result = 0;
+		
+		try {
+			String sql = null;
+			if(input == 1) sql = prop.getProperty("updateName");
+			if(input == 2) sql = prop.getProperty("updatePrice");
+			if(input == 3) sql = prop.getProperty("updateGender");
+			if(input == 4) sql = prop.getProperty("updateLifeOrDie");
+			
+			pstmt= conn.prepareStatement(sql);
+			
+			if(input == 1) pstmt.setString(1, livestock.getLivestockName());
+			if(input == 2) pstmt.setInt(1, livestock.getLivestockPrice());
+			if(input == 3) pstmt.setString(1, livestock.getLivestockGender());
+			if(input == 4) pstmt.setString(1, livestock.getLifeOrDie());
+			
+			pstmt.setInt(2, livestock.getMemberNo());
+			pstmt.setInt(3, livestock.getTankNo());
+			
+			result = pstmt.executeUpdate();
+			
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
 }

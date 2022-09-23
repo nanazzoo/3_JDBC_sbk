@@ -7,7 +7,7 @@ public class AquariumRun {
 	public static void main(String[] args) {
 		
 		new AquariumView().mainMenu();
-
+			
 	}
 
 }
