@@ -9,6 +9,7 @@ import am.livestock.vo.Livestock;
 import am.main.view.AquariumView;
 import am.member.model.service.MemberService;
 import am.member.vo.Member;
+import am.parameter.view.ParameterView;
 import am.tank.vo.Tank;
 
 public class MemberView {
@@ -16,6 +17,7 @@ public class MemberView {
 	
 	private MemberService service = new MemberService();
 	private LivestockView view = new LivestockView();
+	private ParameterView pView = new ParameterView();
 	
 	private int input = -1;
 	public static int tankNo = 0;
@@ -77,7 +79,7 @@ public class MemberView {
 				switch(input) {
 				case 1: updateTank(tankNo); break;
 				case 2: view.livestockMenu(tankNo); break;
-				case 3: ; break;
+				case 3: pView.parameterMenu(tankNo); break;
 				case 4: ; break;
 				case 5: deleteTank(tankNo); break;
 				case 0: break;
