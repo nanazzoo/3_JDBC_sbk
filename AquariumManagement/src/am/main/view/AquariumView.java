@@ -277,9 +277,9 @@ public class AquariumView {
 			int result = service.insertTank(tank, maxTankNo);
 			
 			if(result > 0) {
-				System.out.println("\n[어항 등록 완료]\n");
+				System.out.println("\n[어항 추가 완료]\n");
 			} else {
-				System.out.println("\n[어항 등록 실패]\n");
+				System.out.println("\n[어항 추가 실패]\n");
 				
 			}
 			
@@ -331,6 +331,7 @@ public class AquariumView {
 		default:
 		}
 		
+		System.out.println("\n*** 대략적인 추산치일 뿐 정확한 물량이 아닙니다. ***\n");
 		System.out.println("물량: " + result + "L");
 		
 	}

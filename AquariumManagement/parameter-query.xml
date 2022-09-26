@@ -1,5 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
-<comment>parameter-query.xml file</comment>
+
+	<comment>parameter-query.xml file</comment>
+	
+	<!-- 물성치 개수 조회 -->
+	<entry key="countParameter">
+		SELECT COUNT(*)
+		FROM AR_PARAMETER
+		WHERE MEMBER_NO = ?
+		AND TANK_NO = ?
+	</entry>
+	
+	<!-- 최근 물성치 조회 -->
+	<entry key="selectCParameter">
+		SELECT  P.TANK_NO , TO_CHAR(A.REG_DATE), P.PARAM_TEMP,
+			P.PARAM_NO3 , P.PARAM_PO4 , P.PARAM_KH ,P."PARAM_Ca" , P."PARAM_Mg"
+		FROM (SELECT ROW_NUMBER() OVER(ORDER BY REG_DATE DESC) AS rownumber, MEMBER_NO, TANK_NO, 
+			REG_DATE, PARAM_TEMP,
+			PARAM_NO3 , PARAM_PO4 , PARAM_KH ,"PARAM_Ca" , "PARAM_Mg"
+			FROM AR_PARAMETER
+			WHERE MEMBER_NO = ?
+			AND TANK_NO = ?
+			AND DELETE_FL = 'N') P
+		JOIN AR_PARAMETER A ON(P.REG_DATE = A.REG_DATE)
+		WHERE P.rownumber = 1
+	</entry>
+	
+	<!-- 직전 물성치 조회 -->
+	<entry key="selectPParameter">
+		SELECT  P.TANK_NO , TO_CHAR(A.REG_DATE), P.PARAM_TEMP,
+			P.PARAM_NO3 , P.PARAM_PO4 , P.PARAM_KH ,P."PARAM_Ca" , P."PARAM_Mg"
+		FROM (SELECT ROW_NUMBER() OVER(ORDER BY REG_DATE DESC) AS rownumber, MEMBER_NO, TANK_NO, 
+			REG_DATE, PARAM_TEMP,
+			PARAM_NO3 , PARAM_PO4 , PARAM_KH ,"PARAM_Ca" , "PARAM_Mg"
+			FROM AR_PARAMETER
+			WHERE MEMBER_NO = ?
+			AND TANK_NO = ?
+			AND DELETE_FL = 'N') P
+		JOIN AR_PARAMETER A ON(P.REG_DATE = A.REG_DATE)
+		WHERE P.rownumber = 2
+	</entry>
+	
+	<!-- 물성치 등록 -->
+	<entry key="insertParameter">
+		INSERT INTO AR_PARAMETER
+		VALUES(?, ?, ?, 
+		?, ?, ?, ?, ?, DEFAULT)
+	</entry>
+	
+	<!-- 물성치 삭제 -->
+	<entry key="deleteParameter">
+		UPDATE AR_PARAMETER SET
+		DELETE_FL = 'Y'
+		WHERE MEMBER_NO = ?
+		AND TANK_NO = ?
+		AND PARAMETER_NO = ?	
+	</entry>
+	
+	<!--  -->
+	<entry key="">
+	
+	</entry>
+	
 </properties>

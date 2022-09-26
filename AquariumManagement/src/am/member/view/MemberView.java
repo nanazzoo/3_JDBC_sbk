@@ -11,6 +11,7 @@ import am.member.model.service.MemberService;
 import am.member.vo.Member;
 import am.parameter.view.ParameterView;
 import am.tank.vo.Tank;
+import am.todo.view.TodoView;
 
 public class MemberView {
 	private Scanner sc = new Scanner(System.in);
@@ -18,6 +19,7 @@ public class MemberView {
 	private MemberService service = new MemberService();
 	private LivestockView view = new LivestockView();
 	private ParameterView pView = new ParameterView();
+	private TodoView tView = new TodoView();
 	
 	private int input = -1;
 	public static int tankNo = 0;
@@ -80,7 +82,7 @@ public class MemberView {
 				case 1: updateTank(tankNo); break;
 				case 2: view.livestockMenu(tankNo); break;
 				case 3: pView.parameterMenu(tankNo); break;
-				case 4: ; break;
+				case 4: tView.todoMenu(tankNo); break;
 				case 5: deleteTank(tankNo); break;
 				case 0: break;
 				default: System.out.println("메뉴에 있는 번호만 입력해주세요.");

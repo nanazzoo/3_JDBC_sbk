@@ -1,5 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
-<comment>todo-query.xml file</comment>
+
+	<comment>todo-query.xml file</comment>
+	
+	<!-- 할 일 조회 -->
+	<entry key="selectTodo">
+		<![CDATA[
+		SELECT TODO_NO , TODO_CONTENT ,
+			CASE
+				WHEN SYSDATE - REG_DATE < 1/24/60
+				THEN FLOOR((SYSDATE - REG_DATE)*24*60*60) || '초 전'
+				WHEN SYSDATE - REG_DATE < 1/24
+				THEN FLOOR( (SYSDATE - REG_DATE) * 24 * 60) || '분 전'
+				WHEN SYSDATE - REG_DATE < 1
+				THEN FLOOR( (SYSDATE - REG_DATE) * 24) || '시간 전'
+				ELSE TO_CHAR(REG_DATE, 'YYYY-MM-DD')
+			END REG_DATE, 
+			CASE
+				WHEN TODO_TERM - SYSDATE < 1/24/60
+				THEN FLOOR((TODO_TERM - SYSDATE)*24*60*60) || '초 남음'
+				WHEN TODO_TERM - SYSDATE < 1/24
+				THEN FLOOR( (TODO_TERM - SYSDATE) * 24 * 60) || '분 남음'
+				WHEN TODO_TERM - SYSDATE < 1
+				THEN FLOOR( (TODO_TERM - SYSDATE) * 24) || '시간 남음'
+				WHEN TODO_TERM - SYSDATE < 7
+				THEN FLOOR( (TODO_TERM - SYSDATE)) || '일 남음'
+				ELSE TO_CHAR(TODO_TERM , 'YYYY-MM-DD')
+			END
+		FROM AR_TODO_LIST]]>
+		WHERE MEMBER_NO = ?
+		AND TANK_NO =?
+		AND CONCLUDED_FL = 'N'
+		AND DELETE_FL = 'N'
+		ORDER BY TODO_TERM
+	</entry>
+	
+	<!-- 가장 큰 TODO_NO -->
+	<entry key="maxTodoNo">
+		SELECT MAX(TODO_NO) 
+		FROM AR_TODO_LIST
+		WHERE MEMBER_NO = ?
+		AND TANK_NO = ?
+	</entry>
+	
+	<!-- 할 일 추가 -->
+	<entry key="insertTodo">
+		INSERT INTO AR_TODO_LIST 
+		VALUES(?, ?, ?, ?, SYSDATE, TO_DATE(?, 'YYYY-MM-DD'), DEFAULT, DEFAULT)
+	</entry>
+	
+	<!-- 할 일 조회 -->
+	<entry key="selectTodo2">
+		SELECT TODO_NO , TODO_CONTENT
+		FROM AR_TODO_LIST
+		WHERE MEMBER_NO = ?
+		AND TANK_NO =?
+		AND CONCLUDED_FL = 'N'
+		AND DELETE_FL = 'N'
+		ORDER BY TODO_NO
+	</entry>
+	
+	<!-- 할 일 완료 -->
+	<entry key="completeTodo">
+		UPDATE AR_TODO_LIST SET
+		CONCLUDED_FL = 'Y'
+		WHERE MEMBER_NO = ?
+		AND TANK_NO = ?
+		AND TODO_NO = ?
+	</entry>
+	
+	<!-- 할 일 삭제 -->
+	<entry key="completeTodo">
+		UPDATE AR_TODO_LIST SET
+		DELETE_FL = 'Y'
+		WHERE MEMBER_NO = ?
+		AND TANK_NO = ?
+		AND TODO_NO = ?
+	</entry>
+	
+	
 </properties>

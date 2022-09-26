@@ -61,7 +61,7 @@ public class LivestockView {
 				switch(input) {
 				case 1: insertLivestock(tankNo); break;
 				case 2: updateLivestock(tankNo); break;
-				case 3: ; break;
+				case 3: deleteLivestock(tankNo); break;
 				case 0: break;
 				default: System.out.println("메뉴에 있는 번호만 입력해주세요.");
 				}
@@ -76,7 +76,8 @@ public class LivestockView {
 		
 	}
 
-	
+
+
 
 	/** 생물 등록
 	 * @param tankNo
@@ -234,6 +235,54 @@ public class LivestockView {
 		}
 		
 	}
+	
+	
+	
+	
+	
+
+	/** 생물 삭제
+	 * @param tankNo
+	 */
+	private void deleteLivestock(int tankNo) {
+		try {
+			System.out.println("\n[생물 삭제]\n");
+			
+			int memberNo = AquariumView.loginMember.getMemberNo();
+			
+			
+			System.out.println("삭제할 생물 번호: ");
+			int livestockNo = sc.nextInt();
+			
+			Livestock livestock = new Livestock();
+			livestock.setMemberNo(memberNo);
+			livestock.setTankNo(tankNo);
+			livestock.setLivestockNo(livestockNo);
+			
+			System.out.println("정말 삭제하시겠습니까?(Y/N): ");
+			String input = sc.next().toLowerCase();
+			
+			if(input.equals("y")) {
+				int result = service.deleteLivestock(livestock);
+				
+				if(result > 0) {
+					System.out.println("\n[생물 삭제 완료]\n");
+				} else {
+					System.out.println("\n[생물 삭제 실패]\n");
+					
+				}
+			}
+			else {
+				System.out.println("삭제를 취소합니다.");
+			}
+			
+		} catch (Exception e) {
+			System.out.println("\n[생물 삭제 중 예외 발생]\n");
+			e.printStackTrace();
+		}
+		
+	}
+
 	
 	
 	

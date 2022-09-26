@@ -1,4 +1,4 @@
-package edu.kh.jdbc.board.vo;
+package edu.kh.jdbc.board.model.vo;
 
 // 댓글 1개에 대한 값을 저장하는 VO
 public class Comment {

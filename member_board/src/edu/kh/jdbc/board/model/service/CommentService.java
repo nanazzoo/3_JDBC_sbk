@@ -5,7 +5,7 @@ import static edu.kh.jdbc.common.JDBCTemplate.*;
 import java.sql.Connection;
 
 import edu.kh.jdbc.board.model.dao.CommentDAO;
-import edu.kh.jdbc.board.vo.Comment;
+import edu.kh.jdbc.board.model.vo.Comment;
 
 public class CommentService {
 	

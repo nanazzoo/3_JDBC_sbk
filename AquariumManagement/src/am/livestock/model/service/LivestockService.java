@@ -81,6 +81,27 @@ public class LivestockService {
 	
 	
 	
+	/** 생물 삭제 서비스
+	 * @param livestock
+	 * @return result
+	 * @throws Exception
+	 */
+	public int deleteLivestock(Livestock livestock) throws Exception {
+		Connection conn = getConnection();
+		
+		int result = dao.deleteLivestock(conn, livestock);
+		
+		if(result > 0) commit(conn);
+		else rollback(conn);
+		
+		close(conn);
+		
+		return result;
+	}
+
+	
+	
+	
 	
 	
 	

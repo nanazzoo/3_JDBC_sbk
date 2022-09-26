@@ -9,7 +9,7 @@
 		SELECT LIVESTOCK_NO, LIVESTOCK_SPECIES , LIVESTOCK_NM 
 		, LIVESTOCK_PRICE, LIVESTOCK_GENDER , TO_CHAR(DATE_OF_PURCHASE, 'YYYY-MM-DD') 구입일
 		FROM AR_LIVESTOCK
-		WHERE MEMBER_NO = ? AND TANK_NO = ? AND LIFE_OR_DIE_FL = 'L'
+		WHERE MEMBER_NO = ? AND TANK_NO = ? AND LIFE_OR_DIE_FL = 'L' AND DELETE_FL = 'N'
 	</entry>
 	
 	<!-- 가장 큰 생물 번호 조회 -->
@@ -56,6 +56,15 @@
 		LIFE_OR_DIE_FL = ?
 		WHERE MEMBER_NO = ?
 		AND TANK_NO = ?
+	</entry>
+	
+	<!-- 생물 삭제 -->
+	<entry key = "deleteLivestock">
+		UPDATE AR_LIVESTOCK SET
+		DELETE_FL = 'Y'
+		WHERE MEMBER_NO = ?
+		AND TANK_NO = ?
+		AND LIVESTOCK_NO = ?
 	</entry>
 	
 	

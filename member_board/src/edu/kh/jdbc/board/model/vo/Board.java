@@ -1,4 +1,4 @@
-package edu.kh.jdbc.board.vo;
+package edu.kh.jdbc.board.model.vo;
 
 import java.util.List;
 
