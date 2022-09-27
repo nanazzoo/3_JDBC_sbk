@@ -92,8 +92,7 @@ public class TodoDAO {
 				
 				todos.setTodoNo(rs.getInt(1));
 				todos.setTodoContent(rs.getString(2));
-				todos.setRegDate(rs.getString(3));
-				todos.setTodoTerm(rs.getString(4));
+
 				
 				todoList.add(todos);	
 			}
@@ -222,6 +221,79 @@ public class TodoDAO {
 	}
 	
 	return result;
+	}
+
+	
+	
+	/** 완료된 할 일 조회
+	 * @param conn
+	 * @param todo
+	 * @return todoList
+	 * @throws Exception
+	 */
+	public List<Todo> selectComTodo(Connection conn, Todo todo) throws Exception{
+		List<Todo> todoList = new ArrayList<>();
+		
+		try {
+			String sql = prop.getProperty("selectComTodo");
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, todo.getMemberNo());
+			pstmt.setInt(2, todo.getTankNo());
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				Todo todos = new Todo();
+				
+				todos.setTodoNo(rs.getInt(1));
+				todos.setTodoContent(rs.getString(2));
+				todos.setRegDate(rs.getString(3));
+				
+				todoList.add(todos);	
+			}
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		
+		return todoList;
+	}
+
+	
+	
+	/** 지연된 할 일 조회 DAO
+	 * @param conn
+	 * @param memberNo
+	 * @return todoList
+	 * @throws Exception
+	 */
+	public List<Todo> selectDelayedTodo(Connection conn, int memberNo) throws Exception {
+		List<Todo> todoList = new ArrayList<>();
+		
+		try {
+			String sql = prop.getProperty("selectDelayedTodo");
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, memberNo);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				Todo todo = new Todo();
+				todo.setTankNo(rs.getInt(1));
+				
+				
+			}
+			
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		
+		return todoList;
 	}
 
 }

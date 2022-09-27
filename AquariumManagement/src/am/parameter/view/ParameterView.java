@@ -37,6 +37,7 @@ public class ParameterView {
 					System.out.println("\n[최근 물성치]\n");
 						
 						System.out.println();
+						System.out.println("번호    : " + cParameter.getParameterNo());
 						System.out.println("등록일  : " + cParameter.getRegDate());
 						System.out.println("온도    : " + cParameter.getParamTemp());
 						System.out.println("질산염  : " + cParameter.getParamNo3());
@@ -56,6 +57,7 @@ public class ParameterView {
 					System.out.println("\n[최근 물성치 비교]\n");
 					
 					System.out.println();
+					System.out.println("번호    : " + pParameter.getParameterNo()+ "        |        " + cParameter.getParameterNo());
 					System.out.println("등록일  : " + pParameter.getRegDate()  +"      " + cParameter.getRegDate());
 					System.out.println("온도    : " + pParameter.getParamTemp()  +"  ->  "+ cParameter.getParamTemp());
 					System.out.println("질산염  : " + pParameter.getParamNo3()  + "  ->  "+cParameter.getParamNo3());
@@ -89,7 +91,7 @@ public class ParameterView {
 				
 				switch(input) {
 				case 1: insertParameter(tankNo); break;
-				case 2: deleteParameter(tankNo); break;
+				case 2: deleteParameter(tankNo);  break;
 				case 0: System.out.println("\n[로그인 메뉴로 돌아갑니다.]\n"); break;
 				default: System.out.println("\n[메뉴에 있는 번호만 입력해주세요.]\n");
 				}
@@ -114,6 +116,7 @@ public class ParameterView {
 			System.out.println("\n[물성치 기록]\n");
 			
 			int memberNo = AquariumView.loginMember.getMemberNo();
+			
 				
 			
 			System.out.print("온도: ");

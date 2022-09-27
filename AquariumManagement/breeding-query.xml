@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+
+	<comment>breeding-query.xml file</comment>
+	
+	<!-- 브리딩 목록 조회 -->
+	<entry key="selectAllBreeding">
+	SELECT BREEDING_NO , BREED_SPECIES1,
+			 <![CDATA[CASE
+				WHEN SYSDATE - START_DATE < 1/24/60
+				THEN FLOOR((SYSDATE - START_DATE)*24*60*60) || '초 전'
+				WHEN SYSDATE - START_DATE < 1/24
+				THEN FLOOR( (SYSDATE - START_DATE) * 24 * 60) || '분 전'
+				WHEN SYSDATE - START_DATE < 1
+				THEN FLOOR( (SYSDATE - START_DATE) * 24) || '시간 전'
+				WHEN SYSDATE - START_DATE < 7
+				THEN FLOOR( (SYSDATE - START_DATE)) || '일 전'
+				ELSE TO_CHAR(START_DATE, 'YYYY-MM-DD')
+			END START_DATE, END_FL]]>
+		FROM AR_BREEDING
+		WHERE MEMBER_NO = ?
+		AND DELETE_FL = 'N'
+		ORDER BY BREEDING_NO
+	</entry>
+	
+	<!-- 브리딩 상세 조회 -->
+	<entry key="selectBreeding">
+		SELECT BREEDING_NO , BREED_SPECIES1, FROM_TANK_NO1, BREED_SPECIES2,
+			FROM_TANK_NO2, TO_CHAR(START_DATE, 'YYYY-MM-DD') 
+		FROM AR_BREEDING
+		WHERE MEMBER_NO = ?
+		AND BREEDING_NO = ?
+	</entry>
+	
+	
+	<!-- 브리딩 완료 처리 -->
+	<entry key="completeBreeding">
+		UPDATE AR_BREEDING SET
+		END_FL = 'Y'
+		WHERE MEMBER_NO = ?
+		AND BREEDING_NO = ?
+	</entry>
+	
+	
+	<!-- 브리딩 삭제 -->
+	<entry key="deleteBreeding">
+		UPDATE AR_BREEDING SET
+		DELETE_FL = 'Y'
+		WHERE MEMBER_NO = ?
+		AND BREEDING_NO = ?
+	</entry>
+	
+	<!-- 가장 큰 브리딩 번호 -->
+	<entry key="maxBreedingNo">
+		SELECT MAX(BREEDING_NO)
+		FROM AR_BREEDING
+		WHERE MEMBER_NO = ?
+	</entry>
+	
+	
+	<!-- 브리딩 추가 -->
+	<entry key="insertBreeding">
+		INSERT INTO AR_BREEDING
+		VALUES(?, ?, ?, ?, ? ,?, ? , DEFAULT, DEFAULT)
+	</entry>
+	
+	<!-- 브리딩 추가 날짜 디폴트-->
+	<entry key="insertBreeding2">
+		INSERT INTO AR_BREEDING
+		VALUES(?, ?, ?, ?, ? ,?, DEFAULT, DEFAULT, DEFAULT)
+	</entry>
+	
+	
+	
+</properties>

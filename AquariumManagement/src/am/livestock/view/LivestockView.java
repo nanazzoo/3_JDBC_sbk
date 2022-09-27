@@ -91,10 +91,10 @@ public class LivestockView {
 			int maxLivestockNo = service.maxLivestockNo(memberNo, tankNo);
 			
 			
-			System.out.print("생물 종류: ");
+			System.out.print("생물 종류(물고기/산호/무척추): ");
 			String livestockSpecies = sc.nextLine();
 			
-			System.out.print("생물 이름: ");
+			System.out.print("생물 이름(ex)퍼큘라 크라운): ");
 			String livestockName = sc.nextLine();
 			
 			System.out.print("생물 가격: ");
@@ -106,10 +106,10 @@ public class LivestockView {
 				livestockGender = sc.next().toUpperCase();
 				sc.nextLine();
 				
-				if(livestockGender.equals("S") || livestockGender.equals("F") || livestockGender.equals("N")) {
+				if(livestockGender.equals("M") || livestockGender.equals("F") || livestockGender.equals("N")) {
 					break;
 				} else {
-					System.out.println("S 또는 F만 입력 가능합니다.");
+					System.out.println("M 또는 F 또는 N만 입력 가능합니다.");
 				}
 			}
 			

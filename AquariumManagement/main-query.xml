@@ -6,10 +6,11 @@
 	
 	<!-- login -->
 	<entry key = "login">
-		SELECT MEMBER_NO, MEMBER_ID, MEMBER_NM
+		SELECT MEMBER_NO, MEMBER_ID, MEMBER_NM, MEMBER_PW
 		FROM AR_MEMBER
 		WHERE MEMBER_ID = ?
 		AND MEMBER_PW = ?
+		AND SECESSION_FL = 'N'
 	</entry>
 	
 	
@@ -50,6 +51,13 @@
 		VALUES(?, ?, ?, ?, ?, ?, ?
 		, ?, ?, DEFAULT)
 
+	</entry>
+	
+	<!-- 회원 탈퇴 -->
+	<entry key = "secession">
+		UPDATE AR_MEMBER SET
+		SECESSION_FL = 'Y'
+		WHERE MEMBER_NO = ?
 	</entry>
 	
 	

@@ -78,6 +78,53 @@ public class LivestockDAO {
 	
 		return livestockList;
 	}
+	
+	
+	
+	
+	/** 전체 생물 목록 조회 DAO
+	 * @param conn
+	 * @param memberNo
+	 * @param tankNo
+	 * @return livestockList
+	 * @throws Exception
+	 */
+	public List<Livestock> selectLivestock(Connection conn, int memberNo) throws Exception {
+		List<Livestock> livestockList = new ArrayList<>();
+		
+		try {
+			String sql = prop.getProperty("selectAllLivestock");
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, memberNo);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				Livestock livestock = new Livestock();
+				
+				
+				livestock.setTankNo(rs.getInt(1));
+				livestock.setLivestockNo(rs.getInt("LIVESTOCK_NO"));
+				livestock.setLivestockSpecies(rs.getString("LIVESTOCK_SPECIES"));
+				livestock.setLivestockName(rs.getString("LIVESTOCK_NM"));
+				livestock.setLivestockPrice(rs.getInt("LIVESTOCK_PRICE"));
+				livestock.setLivestockGender(rs.getString("LIVESTOCK_GENDER"));
+				livestock.setDateOfPurchase(rs.getString(7));
+				
+				livestockList.add(livestock);
+			}
+			
+			
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		
+		
+		return livestockList;
+	}
 
 
 	/** 가장 큰 생물 번호 조회 DAO
@@ -134,9 +181,7 @@ public class LivestockDAO {
 			if(maxLivestockNo == 0) {
 				maxLivestockNo = 1;
 				pstmt.setInt(3, maxLivestockNo);
-			}
-			
-			if(maxLivestockNo > 0) {
+			} else {
 				maxLivestockNo = maxLivestockNo+1;
 				pstmt.setInt(3, maxLivestockNo);
 			}
@@ -219,4 +264,5 @@ public class LivestockDAO {
 		
 		return result;
 	}
+
 }

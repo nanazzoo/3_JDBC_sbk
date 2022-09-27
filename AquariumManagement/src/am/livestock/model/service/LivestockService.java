@@ -25,6 +25,22 @@ public class LivestockService {
 		
 		return livestockList;
 	}
+	
+	
+	/**사용자의 전체 생물 목록 조회 서비스 
+	 * @param memberNo
+	 * @return livestockList
+	 * @throws Exception
+	 */
+	public List<Livestock> selectLivestock(int memberNo) throws Exception {
+		Connection conn = getConnection();
+		
+		List<Livestock> livestockList = dao.selectLivestock(conn, memberNo);
+		
+		close(conn);
+		
+		return livestockList;
+	}
 
 	/** 가장 큰 생물 번호 조회
 	 * @param memberNo

@@ -59,7 +59,7 @@ public class AquariumDAO {
 			
 			if(rs.next()) {
 				loginMember = new Member(rs.getInt("MEMBER_NO"),
-						memberId, rs.getString("MEMBER_NM"));
+						memberId, rs.getString("MEMBER_NM"), rs.getString("MEMBER_PW"));
 										
 			}
 		} finally {
@@ -217,9 +217,7 @@ public class AquariumDAO {
 			if(maxTankNo == 0) {
 				maxTankNo = 1;
 				pstmt.setInt(2, maxTankNo);
-			}
-			
-			if(maxTankNo > 0) {
+			} else{
 				maxTankNo = maxTankNo+1;
 				pstmt.setInt(2, maxTankNo);
 			}
@@ -259,6 +257,32 @@ public class AquariumDAO {
 		}
 		
 		return tankList;
+	}
+
+
+	/** 회원 탈퇴 DAO
+	 * @param conn
+	 * @param memberNo
+	 * @return result
+	 * @throws Exception
+	 */
+	public int secession(Connection conn, int memberNo) throws Exception{
+		int result = 0;
+		
+		try {
+			String sql = prop.getProperty("secession");
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, memberNo);
+			
+			result = pstmt.executeUpdate();
+			
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
 	}
 	
 	

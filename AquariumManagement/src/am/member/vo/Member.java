@@ -22,11 +22,12 @@ public class Member {
 
 
 
-	public Member(int memberNo, String memberId, String memberName) {
+	public Member(int memberNo, String memberId, String memberName, String memberPw) {
 		super();
 		this.memberNo = memberNo;
 		this.memberId = memberId;
 		this.memberName = memberName;
+		this.memberPw = memberPw;
 	}
 
 	public int getMemberNo() {

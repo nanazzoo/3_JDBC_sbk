@@ -185,13 +185,18 @@ public class TodoView {
 			
 			int memberNo = AquariumView.loginMember.getMemberNo();
 			
+			Todo todo = new Todo();
+			todo.setMemberNo(memberNo);
+			todo.setTankNo(tankNo);
+			
+			List<Todo> todoList = service.selectTodo2(todo);
+			for(Todo t: todoList) {
+				System.out.printf("%d. %s\n", t.getTodoNo(), t.getTodoContent());
+			}
 			
 			System.out.println("삭제할 할 일 번호: ");
 			int todoNo = sc.nextInt();
 			
-			Todo todo = new Todo();
-			todo.setMemberNo(memberNo);
-			todo.setTankNo(tankNo);
 			todo.setTodoNo(todoNo);
 			
 			System.out.println("정말 삭제하시겠습니까?(Y/N): ");
@@ -240,8 +245,8 @@ public class TodoView {
 			} else {
 				System.out.println("\n[완료된 할 일 목록]\n");
 				for(Todo t:todoList) {
-					System.out.printf("   %18s  |  %s  \n"
-							,t.getTodoContent(), t.getRegDate());
+					System.out.printf("%d/.   %18s  |  %s  \n"
+							, t.getTodoNo(), t.getTodoContent(), t.getRegDate());
 				}
 			}
 

@@ -4,15 +4,20 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+import am.breeding.view.BreedingView;
 import am.main.model.service.AquariumService;
 import am.member.view.MemberView;
 import am.member.vo.Member;
 import am.tank.vo.Tank;
+import am.todo.model.service.TodoService;
+import am.todo.vo.Todo;
 
 public class AquariumView {
 	
 	private AquariumService service = new AquariumService();
 	private MemberView memberView = new MemberView();
+	private BreedingView bView = new BreedingView();
+	private TodoService tService = new TodoService();
 	private Scanner sc = new Scanner(System.in);
 	int input = -1;
 	
@@ -28,7 +33,6 @@ public class AquariumView {
 					System.out.println("1. 로그인");
 					System.out.println("2. 회원 가입");
 					System.out.println("0. 프로그램 종료");
-					
 					System.out.print("메뉴 선택 >> ");
 					input = sc.nextInt();
 					sc.nextLine();
@@ -44,8 +48,9 @@ public class AquariumView {
 				}
 					
 				if(loginMember != null) {
+					System.out.println("----------------------------------------------------------------");
 					System.out.println("\n*** Aquarium Management ***\n");
-					System.out.println("\n 어항 관리 메뉴 \n");
+					System.out.println("\n 로그인 메뉴 \n");
 					
 //					어항 번호 | 어항 이름 목록
 					try {
@@ -60,19 +65,41 @@ public class AquariumView {
 										, t.getTankNo(), t.getTankName());
 							}
 						}
+						
 					} catch (Exception e) {
 						System.out.println("어항 목록을 불러오는 도중 오류가 발생하였습니다.");
 						e.printStackTrace();
 					}
 					
 					System.out.println();
+					System.out.println("--------------------------------------------------------------");
+					System.out.println();
+					
+//					지연된 할일 조회
+					try {
+						System.out.println("\n[*** 지연된 할 일 ***]\n");
+						
+						List<Todo> todoList = tService.selectDelayedTodo(loginMember.getMemberNo());
+
+						
+						for(Todo t : todoList) {
+							System.out.printf("%d. | %d | %s | %s ",
+									t.getTankNo(), t.getTodoNo(), t.getTodoContent(), t.getTodoTerm());
+						}
+						
+						
+					} catch (Exception e) {
+						System.out.println("할 일 목록을 불러오는 도중 오류가 발생하였습니다.");
+						e.printStackTrace();
+					}
+					
+					System.out.println();
 					System.out.println("1. 내 어항 선택");
-//					어항 추가할 때 어항 번호 자동 생성하는 SQL 구문에서
-//					MAX(TANK_NO) 조회할 때 추가하려는 어항이 첫 어항이면
-//					MAX(TANK_NO)가 NULL로 나오기 때문에 SQL구문 수정해야함.
 					System.out.println("2. 새 어항 추가");
-					System.out.println("3. 물량 계산기");
-					System.out.println("3. 로그아웃");
+					System.out.println("3. 브리딩 메뉴");
+					System.out.println("4. 물량 계산기");
+					System.out.println("5. 로그아웃");
+					System.out.println("6. 회원 탈퇴");
 					System.out.println("0. 프로그램 종료");
 					
 					System.out.print("메뉴 선택 >> ");
@@ -83,15 +110,17 @@ public class AquariumView {
 					switch(input) {
 					case 1: selectTank(); break;
 					case 2: insertTank(); break;
-					case 3: waterCalculator(); break;
-					case 4: loginMember = null; break;
-					case 0: System.out.println("[프로그램을 종료합니다.]"); break;
-					default: System.out.println("메뉴에 있는 번호만 입력해주세요.");
+					case 3: bView.breedingMenu(); break;
+					case 4: waterCalculator(); break;
+					case 5: loginMember = null; break;
+					case 6: secession(); break;
+					case 0: System.out.println("\n[프로그램을 종료합니다.]\n"); break;
+					default: System.out.println("\n[메뉴에 있는 번호만 입력해주세요.]\n");
 					}
 				
 				}	
 			} catch (InputMismatchException e) {
-				System.out.println("입력 형식이 올바르지 않습니다.");
+				System.out.println("\n[입력 형식이 올바르지 않습니다.]\n");
 				sc.nextLine();
 			}
 			
@@ -100,6 +129,9 @@ public class AquariumView {
 
 	
 	
+	
+
+
 	private void signUp() {
 		
 		System.out.println("[회원 가입]");
@@ -210,19 +242,22 @@ public class AquariumView {
 	
 	
 	private void selectTank() {
-	
-		System.out.println("[어항 선택]");
-		
-		System.out.print("어항 번호: ");
-		int tankNo = sc.nextInt();
-		
-		for(Tank t : tankInfo) {
-			if(t.getTankNo() == tankNo) {
-				memberView.memberMenu(loginMember, tankNo);
-				break;
-			} 
+		if(tankInfo.isEmpty()) {
+			System.out.println("\n[선택할 어항이 없습니다.]\n");
+		} else {
+			System.out.println("[어항 선택]");
+			
+			System.out.print("어항 번호: ");
+			int tankNo = sc.nextInt();
+			
+			for(Tank t : tankInfo) {
+				if(t.getTankNo() == tankNo) {
+					memberView.memberMenu(loginMember, tankNo);
+					break;
+				} 
+			}
+			System.out.println("\n번호가 일치하는 어항이 없습니다.\n");
 		}
-		System.out.println("\n번호가 일치하는 어항이 없습니다.\n");
 		
 	}
 	
@@ -336,6 +371,46 @@ public class AquariumView {
 		
 	}
 	
+	
+	private void secession() {
+		
+		System.out.println("[회원 탈퇴]");
+		
+		try {
+			
+			System.out.print("비밀번호: ");
+			String memberPw = sc.next();
+			
+			
+			if(loginMember.getMemberPw().equals(memberPw)) {
+				System.out.print("\n정말 탈퇴하시겠습니까?(Y/N): ");
+				char ch = sc.next().toUpperCase().charAt(0);
+				
+				if(ch=='Y') {
+					
+					int result = service.secession(loginMember.getMemberNo());
+					
+					if(result > 0) {
+						System.out.println("\n[탈퇴가 완료되었습니다]\n");
+						loginMember = null;
+					} else {
+						System.out.println("\n[탈퇴가 실패했습니다]\n");
+					}
+					
+				} else {
+					System.out.println("\n[탈퇴를 취소합니다.]\n");
+				}
+				
+			}
+			
+			
+			
+		} catch (Exception e) {
+			System.out.println("회원 탈퇴 도중 오류가 발생하였습니다.");
+			e.printStackTrace();
+		}
+	}
+
 	
 
 }

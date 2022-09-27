@@ -84,13 +84,14 @@ public class ParameterDAO {
 				cParameter = new Parameter();
 				
 				cParameter.setTankNo(rs.getInt(1));
-				cParameter.setRegDate(rs.getString(2));
-				cParameter.setParamTemp(rs.getDouble(3));
-				cParameter.setParamNo3(rs.getDouble(4));
-				cParameter.setParamPo4(rs.getDouble(5));
-				cParameter.setParamKh(rs.getDouble(6));
-				cParameter.setParamCa(rs.getDouble(7));
-				cParameter.setParamMg(rs.getDouble(8));
+				cParameter.setParameterNo(rs.getInt(2));
+				cParameter.setRegDate(rs.getString(3));
+				cParameter.setParamTemp(rs.getDouble(4));
+				cParameter.setParamNo3(rs.getDouble(5));
+				cParameter.setParamPo4(rs.getDouble(6));
+				cParameter.setParamKh(rs.getDouble(7));
+				cParameter.setParamCa(rs.getDouble(8));
+				cParameter.setParamMg(rs.getDouble(9));
 							
 			}
 			
@@ -126,13 +127,14 @@ public class ParameterDAO {
 				pParameter = new Parameter();
 				
 				pParameter.setTankNo(rs.getInt(1));
-				pParameter.setRegDate(rs.getString(2));
-				pParameter.setParamTemp(rs.getDouble(3));
-				pParameter.setParamNo3(rs.getDouble(4));
-				pParameter.setParamPo4(rs.getDouble(5));
-				pParameter.setParamKh(rs.getDouble(6));
-				pParameter.setParamCa(rs.getDouble(7));
-				pParameter.setParamMg(rs.getDouble(8));
+				pParameter.setParameterNo(rs.getInt(2));
+				pParameter.setRegDate(rs.getString(3));
+				pParameter.setParamTemp(rs.getDouble(4));
+				pParameter.setParamNo3(rs.getDouble(5));
+				pParameter.setParamPo4(rs.getDouble(6));
+				pParameter.setParamKh(rs.getDouble(7));
+				pParameter.setParamCa(rs.getDouble(8));
+				pParameter.setParamMg(rs.getDouble(9));
 				
 			}
 			
@@ -161,6 +163,7 @@ public class ParameterDAO {
 			
 			pstmt.setInt(1, parameter.getMemberNo());
 			pstmt.setInt(2, parameter.getTankNo());
+			
 			pstmt.setDouble(3, parameter.getParamTemp());
 			pstmt.setDouble(4, parameter.getParamNo3());
 			pstmt.setDouble(5, parameter.getParamPo4());

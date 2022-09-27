@@ -12,6 +12,8 @@ import am.todo.vo.Todo;
 public class TodoService {
 	private TodoDAO dao = new TodoDAO();
 
+	
+	
 	/** 할 일 조회 서비스
 	 * @param todo
 	 * @return todoList
@@ -27,6 +29,8 @@ public class TodoService {
 		return todoList;
 	}
 	
+	
+	
 	/** 할 일 조회 서비스2
 	 * @param todo
 	 * @return todoList
@@ -41,6 +45,8 @@ public class TodoService {
 		
 		return todoList;
 	}
+	
+	
 
 	/** 가장 큰 todo 넘버 조회
 	 * @param todo
@@ -56,7 +62,16 @@ public class TodoService {
 		
 		return maxTodoNo;
 	}
+	
+	
+	
 
+	/** 할 일 등록
+	 * @param todo
+	 * @param maxTodoNo
+	 * @return result
+	 * @throws Exception
+	 */
 	public int insertTodo(Todo todo, int maxTodoNo)  throws Exception{
 		Connection conn = getConnection();
 		
@@ -69,6 +84,9 @@ public class TodoService {
 		
 		return result;
 	}
+	
+	
+	
 
 	/** 할 일 완료 서비스
 	 * @param todo
@@ -107,10 +125,40 @@ public class TodoService {
 	}
 
 	
-	public List<Todo> selectComTodo(Todo todo) {
+	
+	/** 완료된 할 일 조회 서비스
+	 * @param todo
+	 * @return todoList
+	 * @throws Exception
+	 */
+	public List<Todo> selectComTodo(Todo todo) throws Exception {
 		Connection conn = getConnection();
 		
-		return null;
+		List<Todo> todoList = dao.selectComTodo(conn, todo);
+		
+		close(conn);
+		
+		return todoList;
 	}
+
+
+
+	/** 지연된 할 일 조회 서비스
+	 * @param memberNo
+	 * @return todoList
+	 * @throws Exception
+	 */
+	public List<Todo> selectDelayedTodo(int memberNo) throws Exception{
+		Connection conn = getConnection();
+		
+		List<Todo> todoList = dao.selectDelayedTodo(conn, memberNo);
+		
+		close(conn);
+		
+		return todoList;
+	}
+	
+	
+	
 
 }

@@ -84,8 +84,8 @@ public class MemberView {
 				case 3: pView.parameterMenu(tankNo); break;
 				case 4: tView.todoMenu(tankNo); break;
 				case 5: deleteTank(tankNo); break;
-				case 0: break;
-				default: System.out.println("메뉴에 있는 번호만 입력해주세요.");
+				case 0: System.out.println("\n[로그인 메뉴로 이동합니다.]\n");break;
+				default: System.out.println("\n[메뉴에 있는 번호만 입력해주세요.]\n");
 				}
 			} catch (InputMismatchException e) {
 				e.printStackTrace();
@@ -109,27 +109,31 @@ public class MemberView {
 			System.out.println("2. 어항 조명");
 			System.out.println("3. 어항 첨가제");
 			System.out.println("4. 어항 바닥재");
+			System.out.println("0. 뒤로");
+			
 			
 			System.out.print("\n메뉴 선택 >> ");
 			int input = sc.nextInt();
 			sc.nextLine();
 			
-			System.out.print("변경할 내용 입력: ");
-			String content = sc.nextLine();
-			
-			
-			Tank tank = new Tank();
-			tank.setTankNo(tankNo);
-			tank.setMemberNo(AquariumView.loginMember.getMemberNo());
-			
-			int result = service.updateTank(input, content, tank);
-			
-			
-			if(result > 0) {
-				System.out.println("\n[수정 완료]\n");
-			} else {
-				System.out.println("\n[수정 실패]\n");
+			if(input > 0) {
+				System.out.print("변경할 내용 입력: ");
+				String content = sc.nextLine();
 				
+				
+				Tank tank = new Tank();
+				tank.setTankNo(tankNo);
+				tank.setMemberNo(AquariumView.loginMember.getMemberNo());
+				
+				int result = service.updateTank(input, content, tank);
+				
+				
+				if(result > 0) {
+					System.out.println("\n[수정 완료]\n");
+				} else {
+					System.out.println("\n[수정 실패]\n");
+					
+				}
 			}
 			
 			

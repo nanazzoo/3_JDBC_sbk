@@ -10,11 +10,12 @@
 		FROM AR_PARAMETER
 		WHERE MEMBER_NO = ?
 		AND TANK_NO = ?
+		AND DELETE_FL = 'N'
 	</entry>
 	
 	<!-- 최근 물성치 조회 -->
 	<entry key="selectCParameter">
-		SELECT  P.TANK_NO , TO_CHAR(A.REG_DATE), P.PARAM_TEMP,
+		SELECT  P.TANK_NO , PARAMETER_NO, TO_CHAR(A.REG_DATE), P.PARAM_TEMP,
 			P.PARAM_NO3 , P.PARAM_PO4 , P.PARAM_KH ,P."PARAM_Ca" , P."PARAM_Mg"
 		FROM (SELECT ROW_NUMBER() OVER(ORDER BY REG_DATE DESC) AS rownumber, MEMBER_NO, TANK_NO, 
 			REG_DATE, PARAM_TEMP,
@@ -29,7 +30,7 @@
 	
 	<!-- 직전 물성치 조회 -->
 	<entry key="selectPParameter">
-		SELECT  P.TANK_NO , TO_CHAR(A.REG_DATE), P.PARAM_TEMP,
+		SELECT  P.TANK_NO , PARAMETER_NO, TO_CHAR(A.REG_DATE), P.PARAM_TEMP,
 			P.PARAM_NO3 , P.PARAM_PO4 , P.PARAM_KH ,P."PARAM_Ca" , P."PARAM_Mg"
 		FROM (SELECT ROW_NUMBER() OVER(ORDER BY REG_DATE DESC) AS rownumber, MEMBER_NO, TANK_NO, 
 			REG_DATE, PARAM_TEMP,
@@ -45,8 +46,8 @@
 	<!-- 물성치 등록 -->
 	<entry key="insertParameter">
 		INSERT INTO AR_PARAMETER
-		VALUES(?, ?, ?, 
-		?, ?, ?, ?, ?, DEFAULT)
+		VALUES(?, ?, SEQ_PARAMETER_NO.NEXTVAL, ?, 
+		?, ?, ?, ?, ?, DEFAULT, DEFAULT)
 	</entry>
 	
 	<!-- 물성치 삭제 -->
