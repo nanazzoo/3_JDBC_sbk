@@ -261,8 +261,7 @@ public class TodoDAO {
 		return todoList;
 	}
 
-	
-	
+
 	/** 지연된 할 일 조회 DAO
 	 * @param conn
 	 * @param memberNo
@@ -284,8 +283,51 @@ public class TodoDAO {
 			while(rs.next()) {
 				Todo todo = new Todo();
 				todo.setTankNo(rs.getInt(1));
+				todo.setTodoNo(rs.getInt(2));
+				todo.setTodoContent(rs.getString(3));
+				todo.setTodoTerm(rs.getString(4));
 				
+				todoList.add(todo);
+			}
+			
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		
+		return todoList;
+	}
+	
+	
+	
+	
+	/** 어항별 지연된 할 일 조회 DAO
+	 * @param conn
+	 * @param memberNo
+	 * @return todoList
+	 * @throws Exception
+	 */
+	public List<Todo> selectDelayedTodo2(Connection conn, Todo todo) throws Exception {
+		List<Todo> todoList = new ArrayList<>();
+		
+		try {
+			String sql = prop.getProperty("selectDelayedTodo2");
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, todo.getMemberNo());
+			pstmt.setInt(2, todo.getTankNo());
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				todo = new Todo();
+				todo.setTankNo(rs.getInt(1));
+				todo.setTodoNo(rs.getInt(2));
+				todo.setTodoContent(rs.getString(3));
+				todo.setTodoTerm(rs.getString(4));
 				
+				todoList.add(todo);
 			}
 			
 		} finally {

@@ -158,6 +158,21 @@ public class TodoService {
 		return todoList;
 	}
 	
+	/** 지연된 할 일 조회 서비스
+	 * @param memberNo
+	 * @return todoList
+	 * @throws Exception
+	 */
+	public List<Todo> selectDelayedTodo(Todo todo) throws Exception{
+		Connection conn = getConnection();
+		
+		List<Todo> todoList = dao.selectDelayedTodo2(conn, todo);
+		
+		close(conn);
+		
+		return todoList;
+	}
+	
 	
 	
 

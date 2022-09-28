@@ -29,28 +29,30 @@ public class AquariumView {
 		do {
 			try {
 				if(loginMember == null) {
+					System.out.println("--------------------------------------------------------------");
+					System.out.println();
 					System.out.println("\n*** Aquarium Management ***\n");
 					System.out.println("1. 로그인");
 					System.out.println("2. 회원 가입");
 					System.out.println("0. 프로그램 종료");
+					System.out.println();
 					System.out.print("메뉴 선택 >> ");
 					input = sc.nextInt();
 					sc.nextLine();
 					System.out.println();
-					
+					System.out.println("--------------------------------------------------------------");
 					switch(input) {
 					case 1: login(); break;
 					case 2: signUp(); break;
-					case 0: System.out.println("[프로그램을 종료합니다.]"); break;
-					default: System.out.println("메뉴에 있는 번호만 입력해주세요.");
+					case 0: System.out.println("\n[프로그램을 종료합니다.]\n"); break;
+					default: System.out.println("\n[메뉴에 있는 번호만 입력해주세요.]\n");
 					}
 					
 				}
 					
 				if(loginMember != null) {
 					System.out.println("----------------------------------------------------------------");
-					System.out.println("\n*** Aquarium Management ***\n");
-					System.out.println("\n 로그인 메뉴 \n");
+					System.out.println("\n [로그인 메뉴] \n");
 					
 //					어항 번호 | 어항 이름 목록
 					try {
@@ -72,21 +74,23 @@ public class AquariumView {
 					}
 					
 					System.out.println();
-					System.out.println("--------------------------------------------------------------");
 					System.out.println();
 					
 //					지연된 할일 조회
 					try {
 						System.out.println("\n[*** 지연된 할 일 ***]\n");
-						
 						List<Todo> todoList = tService.selectDelayedTodo(loginMember.getMemberNo());
 
-						
+						System.out.println("어항번호. | 할 일 번호 |     할 일     |  지연 기간\n");
 						for(Todo t : todoList) {
-							System.out.printf("%d. | %d | %s | %s ",
+							System.out.printf("%8d. | %10d | %s | %s\n",
 									t.getTankNo(), t.getTodoNo(), t.getTodoContent(), t.getTodoTerm());
 						}
 						
+						System.out.println();
+						System.out.println();
+						System.out.println("--------------------------------------------------------------");
+						System.out.println();
 						
 					} catch (Exception e) {
 						System.out.println("할 일 목록을 불러오는 도중 오류가 발생하였습니다.");
@@ -106,7 +110,7 @@ public class AquariumView {
 					input = sc.nextInt();
 					sc.nextLine();
 					System.out.println();
-					
+					System.out.println("--------------------------------------------------------------");
 					switch(input) {
 					case 1: selectTank(); break;
 					case 2: insertTank(); break;

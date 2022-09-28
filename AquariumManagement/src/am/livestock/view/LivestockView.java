@@ -24,8 +24,12 @@ public class LivestockView {
 				List<Livestock> livestockList = service.selectLivestock(memberNo, tankNo);
 				
 				if(livestockList.isEmpty()) {
+					System.out.println("--------------------------------------------------------------");
 					System.out.println("\n[등록된 생물이 없습니다]\n");
+					System.out.println("--------------------------------------------------------------");
 				} else {
+					System.out.println("--------------------------------------------------------------");
+					System.out.println();
 					System.out.println("\n[내 생물 목록]\n");
 					for(Livestock ls : livestockList) {
 						System.out.printf("%d. %s : %s  | %d | %s | %s |\n",
@@ -45,7 +49,7 @@ public class LivestockView {
 			}
 			
 			try {
-				
+				System.out.println("--------------------------------------------------------------");
 				System.out.println("\n*** Aquarium Management ***\n");
 				System.out.println("[생물 관리 메뉴]");
 				System.out.println("1. 생물 추가");
@@ -57,7 +61,7 @@ public class LivestockView {
 				input = sc.nextInt();
 				sc.nextLine();
 				System.out.println();
-				
+				System.out.println("--------------------------------------------------------------");
 				switch(input) {
 				case 1: insertLivestock(tankNo); break;
 				case 2: updateLivestock(tankNo); break;

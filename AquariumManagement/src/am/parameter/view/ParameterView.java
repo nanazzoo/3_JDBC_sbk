@@ -30,8 +30,11 @@ public class ParameterView {
 				int count = service.countParemeter(parameter);
 				
 				if(count == 0) {
+					System.out.println("--------------------------------------------------------------");
 					System.out.println("\n[등록된 물성치가 없습니다]\n");
+					System.out.println("--------------------------------------------------------------");
 				} else if(count == 1) {
+					System.out.println("--------------------------------------------------------------");
 					Parameter cParameter = service.selectCParameter(parameter);
 					
 					System.out.println("\n[최근 물성치]\n");
@@ -46,27 +49,27 @@ public class ParameterView {
 						System.out.println("칼슘    : " + cParameter.getParamCa());
 						System.out.println("마그네슘: " + cParameter.getParamMg());
 						System.out.println();
-					
+						System.out.println("--------------------------------------------------------------");
 					
 					
 				} else {
 					Parameter cParameter = service.selectCParameter(parameter);
 					Parameter pParameter = service.selectPParameter(parameter);
 
-					 
+					System.out.println("--------------------------------------------------------------");
 					System.out.println("\n[최근 물성치 비교]\n");
 					
 					System.out.println();
 					System.out.println("번호    : " + pParameter.getParameterNo()+ "        |        " + cParameter.getParameterNo());
-					System.out.println("등록일  : " + pParameter.getRegDate()  +"      " + cParameter.getRegDate());
-					System.out.println("온도    : " + pParameter.getParamTemp()  +"  ->  "+ cParameter.getParamTemp());
-					System.out.println("질산염  : " + pParameter.getParamNo3()  + "  ->  "+cParameter.getParamNo3());
-					System.out.println("인산염  : " + pParameter.getParamPo4()  +"  ->  "+cParameter.getParamPo4());
-					System.out.println("경도    : " + pParameter.getParamKh()  +"  ->  "+cParameter.getParamKh());
-					System.out.println("칼슘    : " + pParameter.getParamCa()  +"  ->  " + cParameter.getParamCa());
+					System.out.println("등록일  : " + pParameter.getRegDate()  +"    " + cParameter.getRegDate());
+					System.out.println("온도    : " + pParameter.getParamTemp()  +"    ->  "+ cParameter.getParamTemp());
+					System.out.println("질산염  : " + pParameter.getParamNo3()  + "    ->  "+cParameter.getParamNo3());
+					System.out.println("인산염  : " + pParameter.getParamPo4()  +"     ->  "+cParameter.getParamPo4());
+					System.out.println("경도    : " + pParameter.getParamKh()  +"     ->  "+cParameter.getParamKh());
+					System.out.println("칼슘    : " + pParameter.getParamCa()  +"   ->  " + cParameter.getParamCa());
 					System.out.println("마그네슘: " + pParameter.getParamMg()  +"  ->  "+ cParameter.getParamMg());
 					System.out.println();
-					
+					System.out.println("--------------------------------------------------------------");
 				}
 				
 				
@@ -77,7 +80,7 @@ public class ParameterView {
 			}
 			
 			try {
-				
+				System.out.println("--------------------------------------------------------------");
 				System.out.println("\n*** Aquarium Management ***\n");
 				System.out.println("[물성치 메뉴]");
 				System.out.println("1. 물성치 추가");
@@ -88,7 +91,7 @@ public class ParameterView {
 				input = sc.nextInt();
 				sc.nextLine();
 				System.out.println();
-				
+				System.out.println("--------------------------------------------------------------");
 				switch(input) {
 				case 1: insertParameter(tankNo); break;
 				case 2: deleteParameter(tankNo);  break;

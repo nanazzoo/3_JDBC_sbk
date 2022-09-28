@@ -28,6 +28,7 @@ public class BreedingView {
 	public void breedingMenu() {
 		do {
 			try {
+				System.out.println("--------------------------------------------------------------");
 				System.out.println("\n*** Aquarium Management ***\n");
 				System.out.println("\n 브리딩 메뉴 \n");
 
@@ -51,6 +52,7 @@ public class BreedingView {
 									, endFl);
 						}
 					}
+					System.out.println("--------------------------------------------------------------");
 				} catch (Exception e) {
 					System.out.println("\n[브리딩 목록 조회 중 예외가 발생했습니다.]\n");
 					e.printStackTrace();
@@ -66,7 +68,7 @@ public class BreedingView {
 				input = sc.nextInt();
 				sc.nextLine();
 				System.out.println();
-				
+				System.out.println("--------------------------------------------------------------");
 				switch(input) {
 				case 1: selectBreeding(); break;
 				case 2: insertBreeding(); break;
@@ -170,6 +172,8 @@ public class BreedingView {
 			System.out.print("\n서브 메뉴 선택 : ");
 			int input = sc.nextInt();
 			sc.nextLine();
+			
+			System.out.println("--------------------------------------------------------------");
 			
 			int memberNo = AquariumView.loginMember.getMemberNo();
 			

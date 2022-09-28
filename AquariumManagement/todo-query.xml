@@ -33,6 +33,7 @@
 		AND TANK_NO =?
 		AND CONCLUDED_FL = 'N'
 		AND DELETE_FL = 'N'
+		<![CDATA[AND (SYSDATE - TODO_TERM) < 0]]>
 		ORDER BY TODO_TERM
 	</entry>
 	
@@ -52,6 +53,7 @@
 	
 	<!-- 할 일 조회 -->
 	<entry key="selectTodo2">
+
 		SELECT TODO_NO , TODO_CONTENT
 		FROM AR_TODO_LIST
 		WHERE MEMBER_NO = ?
@@ -108,7 +110,33 @@
 		FROM AR_TODO_LIST
 		WHERE (SYSDATE - TODO_TERM) >= 0
 		AND CONCLUDED_FL = 'N'
-		AND MEMBER_NO = 
+		AND MEMBER_NO = ?
+		ORDER BY TODO_NO
+	</entry>
+	
+	
+	
+	<!-- 지연된 할 일 조회2 -->
+	<entry key="selectDelayedTodo2">
+	<![CDATA[
+		SELECT TANK_NO, TODO_NO , TODO_CONTENT ,
+			CASE
+				WHEN SYSDATE - TODO_TERM < 1/24/60
+				THEN FLOOR((SYSDATE - TODO_TERM)*24*60*60) || '초 지남'
+				WHEN SYSDATE - TODO_TERM < 1/24
+				THEN FLOOR( (SYSDATE - TODO_TERM) * 24 * 60) || '분 지남'
+				WHEN SYSDATE - TODO_TERM < 1
+				THEN FLOOR( (SYSDATE - TODO_TERM) * 24) || '시간 지남'
+				WHEN SYSDATE - TODO_TERM < 30
+				THEN FLOOR( (SYSDATE - TODO_TERM)) || '일 지남'
+				ELSE TO_CHAR(TODO_TERM, 'YYYY-MM-DD')
+			END TODO_TERM 
+		FROM AR_TODO_LIST
+		WHERE (SYSDATE - TODO_TERM) >= 0]]>
+		AND CONCLUDED_FL = 'N'
+		AND MEMBER_NO = ?
+		AND TANK_NO = ?
+		ORDER BY TODO_NO
 	</entry>
 	
 	

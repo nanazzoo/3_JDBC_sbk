@@ -28,6 +28,8 @@ public class MemberView {
 		
 		do {
 			try {
+				System.out.println("--------------------------------------------------------------");
+				System.out.println();
 				System.out.println("\n*** 내 어항 ***\n");
 				this.tankNo = tankNo;
 				
@@ -53,6 +55,7 @@ public class MemberView {
 						System.out.println("첨가제   : " + t.getTankAddictive());
 						System.out.println("바닥재   : " + t.getTankSubstrate());
 						System.out.println();
+						System.out.println("--------------------------------------------------------------");
 					}
 				}
 //			
@@ -63,7 +66,7 @@ public class MemberView {
 			}
 			
 			try {
-				
+				System.out.println("--------------------------------------------------------------");
 				System.out.println("\n*** Aquarium Management ***\n");
 				System.out.println("[어항 관리 메뉴]");
 				System.out.println("1. 어항 정보 수정");
@@ -72,12 +75,12 @@ public class MemberView {
 				System.out.println("4. 할 일");
 				System.out.println("5. 어항 삭제");
 				System.out.println("0. 뒤로");
-				
+				System.out.println();
 				System.out.print("메뉴 선택 >> ");
 				input = sc.nextInt();
 				sc.nextLine();
 				System.out.println();
-				
+				System.out.println("--------------------------------------------------------------");
 				switch(input) {
 				case 1: updateTank(tankNo); break;
 				case 2: view.livestockMenu(tankNo); break;

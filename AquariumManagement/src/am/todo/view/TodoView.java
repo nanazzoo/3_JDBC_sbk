@@ -29,18 +29,32 @@ public class TodoView {
 				todo.setTankNo(tankNo);
 				
 				List<Todo> todoList = service.selectTodo(todo);
+				List<Todo> delayedTodoList = service.selectDelayedTodo(todo);
 				
 				if(todoList.isEmpty()) {
-					System.out.println("\n[등록된 물성치가 없습니다]\n");
+					System.out.println("\n[등록된 할 일이 없습니다]\n");
 				} else {
-					System.out.println("\n[예정된 할 일]\n");
+					System.out.println("\n[*** 예정된 할 일 ***]\n");
 					
-					System.out.println("             할 일           |   기한   \n");
+					System.out.println(" 할 일 번호.          할 일           |   기한   \n");
 					for(Todo t : todoList) {
-						System.out.printf("   %18s  |  %s  \n"
-								,t.getTodoContent(), t.getTodoTerm());
+						System.out.printf("%8d.   %18s  |  %s  \n"
+								,t.getTodoNo(), t.getTodoContent(), t.getTodoTerm());
 					}
 					
+				}
+				
+				if(delayedTodoList.isEmpty()) {
+					System.out.println("\n[지연된 할 일이 없습니다.]\n");
+				} else {
+					System.out.println("\n[*** 지연된 할 일 ***]\n");
+					System.out.println();
+
+					System.out.println("어항번호. | 할 일 번호 |     할 일     |  지연 기간\n");
+					for(Todo t : delayedTodoList) {
+						System.out.printf("%8d. | %10d | %s | %s\n",
+								t.getTankNo(), t.getTodoNo(), t.getTodoContent(), t.getTodoTerm());
+					}
 				}
 				
 			} catch (Exception e) {
