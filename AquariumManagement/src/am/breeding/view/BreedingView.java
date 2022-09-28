@@ -1,7 +1,5 @@
 package am.breeding.view;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.InputMismatchException;
 import java.util.Iterator;
 import java.util.List;
@@ -405,31 +403,39 @@ public class BreedingView {
 					if(i==1)livestock1 = findUsingIterator(tankNum, livestockNum, livestockList);
 					if(i==2)livestock2 = findUsingIterator(tankNum, livestockNum, livestockList);
 				}
-						
-				System.out.println("오늘 날짜를 시작일로 지정하려면 'DEFAULT'를 입력해주세요.");
-				System.out.print("브리딩 시작일('YYYY-MM-DD'): ");
-				String startDate = sc.next();
 				
-				breeding.setBreedSpecies1(livestock1.getLivestockName());
-				breeding.setFromTankNo1(livestock1.getTankNo());
-				breeding.setBreedSpecies2(livestock2.getLivestockName());
-				breeding.setFromTankNo2(livestock2.getTankNo());
-				breeding.setMemberNo(memberNo);
-				breeding.setBreedingNo(maxBreedingNo);
-				breeding.setStartDate(startDate);
-			
-				if(breeding.getStartDate().equals("DEFAULT") || breeding.getStartDate().equals("") ||breeding.getStartDate()==null) {
-					result = bService.insertBreeding2(breeding);
-					System.out.println("디폴트");
+				if(livestock1.getTankNo()==livestock2.getTankNo() 
+						&& livestock1.getLivestockNo()==livestock2.getLivestockNo()) {
+					System.out.println("\n[같은 개체는 담을 수 없습니다.]\n");
+					insertBreeding();
 				} else {
-					result = bService.insertBreeding(breeding);
+					
+					System.out.println("오늘 날짜를 시작일로 지정하려면 'DEFAULT'를 입력해주세요.");
+					System.out.print("브리딩 시작일('YYYY-MM-DD'): ");
+					String startDate = sc.next();
+					
+					breeding.setBreedSpecies1(livestock1.getLivestockName());
+					breeding.setFromTankNo1(livestock1.getTankNo());
+					breeding.setBreedSpecies2(livestock2.getLivestockName());
+					breeding.setFromTankNo2(livestock2.getTankNo());
+					breeding.setMemberNo(memberNo);
+					breeding.setBreedingNo(maxBreedingNo);
+					breeding.setStartDate(startDate);
+					
+					if(breeding.getStartDate().equals("DEFAULT") || breeding.getStartDate().equals("") ||breeding.getStartDate()==null) {
+						result = bService.insertBreeding2(breeding);
+						System.out.println("디폴트");
+					} else {
+						result = bService.insertBreeding(breeding);
+					}
+					
+					if(result > 0) {
+						System.out.println("\n[브리딩 추가 성공]\n");
+					}else {
+						System.out.println("\n[브리딩 추가 실패...]\n");
+					}
 				}
-				
-				if(result > 0) {
-					System.out.println("\n[브리딩 추가 성공]\n");
-				}else {
-					System.out.println("\n[브리딩 추가 실패...]\n");
-				}
+						
 			} 
 		
 		
