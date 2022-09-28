@@ -123,6 +123,24 @@ public class TodoService {
 		
 		return result;
 	}
+	
+	/** 전체 할 일 삭제 서비스
+	 * @param todo
+	 * @return result
+	 * @throws Exception
+	 */
+	public int deleteAllTodo(Todo todo) throws Exception {
+		Connection conn = getConnection();
+		
+		int result = dao.deleteAllTodo(conn, todo);
+		
+		if(result > 0) commit(conn);
+		else rollback(conn);
+		
+		close(conn);
+		
+		return result;
+	}
 
 	
 	

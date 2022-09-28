@@ -259,7 +259,7 @@ public class TodoView {
 			} else {
 				System.out.println("\n[완료된 할 일 목록]\n");
 				for(Todo t:todoList) {
-					System.out.printf("%d/.   %18s  |  %s  \n"
+					System.out.printf("%d.   %18s  |  %s  \n"
 							, t.getTodoNo(), t.getTodoContent(), t.getRegDate());
 				}
 			}

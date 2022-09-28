@@ -93,6 +93,25 @@ public class ParameterService {
 		
 		return result;
 	}
+	
+	
+	/** 전체 물성치 삭제 서비스
+	 * @param parameter
+	 * @return result
+	 * @throws Exception
+	 */
+	public int deleteAllParameter(Parameter parameter) throws Exception {
+		Connection conn = getConnection();
+		
+		int result = dao.deleteAllParameter(conn, parameter);
+		
+		if(result > 0) commit(conn);
+		else rollback(conn);
+		
+		close(conn);
+		
+		return result;
+	}
 
 
 }

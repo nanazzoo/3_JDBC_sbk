@@ -73,12 +73,20 @@
 	</entry>
 	
 	<!-- 할 일 삭제 -->
-	<entry key="completeTodo">
+	<entry key="deleteTodo">
 		UPDATE AR_TODO_LIST SET
 		DELETE_FL = 'Y'
 		WHERE MEMBER_NO = ?
 		AND TANK_NO = ?
 		AND TODO_NO = ?
+	</entry>
+	
+	<!-- 할 일 삭제 -->
+	<entry key="deleteAllTodo">
+		UPDATE AR_TODO_LIST SET
+		DELETE_FL = 'Y'
+		WHERE MEMBER_NO = ?
+		AND TANK_NO = ?
 	</entry>
 	
 	<!-- 완료된 할 일 조회 -->
@@ -110,6 +118,7 @@
 		FROM AR_TODO_LIST
 		WHERE (SYSDATE - TODO_TERM) >= 0
 		AND CONCLUDED_FL = 'N'
+		AND DELETE_FL = 'N'
 		AND MEMBER_NO = ?
 		ORDER BY TODO_NO
 	</entry>
@@ -134,6 +143,7 @@
 		FROM AR_TODO_LIST
 		WHERE (SYSDATE - TODO_TERM) >= 0]]>
 		AND CONCLUDED_FL = 'N'
+		AND DELETE_FL = 'N'
 		AND MEMBER_NO = ?
 		AND TANK_NO = ?
 		ORDER BY TODO_NO

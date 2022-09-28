@@ -76,6 +76,14 @@
 		AND LIVESTOCK_NO = ?
 	</entry>
 	
+	<!-- 전체 생물 삭제 -->
+	<entry key = "deleteAllLivestock">
+		UPDATE AR_LIVESTOCK SET
+		DELETE_FL = 'Y'
+		WHERE MEMBER_NO = ?
+		AND TANK_NO = ?
+	</entry>
+	
 	
 
 </properties>

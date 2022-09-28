@@ -6,8 +6,14 @@
 
 	<!-- selectMyTank -->
 	<entry key = "selectMyTank">
-		SELECT TANK_NO 번호, TANK_NAME 이름, FRESH_SALT "해수/담수", TANK_SIZE "어항 크기" , TANK_LIGHT "조명", TANK_FILTER "여과 장치" 
-		, TANK_ADDICTIVE 첨가제 , TANK_SUBSTRATE 바닥재, (SELECT COUNT(*) FROM AR_LIVESTOCK L WHERE L.TANK_NO = T.TANK_NO AND L.DELETE_FL = 'N') 생물수
+		SELECT TANK_NO 번호, TANK_NAME 이름, FRESH_SALT "해수/담수", TANK_SIZE "어항 크기" 
+		, TANK_LIGHT "조명", TANK_FILTER "여과 장치" , TANK_ADDICTIVE 첨가제 , TANK_SUBSTRATE 바닥재
+		, (SELECT COUNT(*) 
+			FROM AR_LIVESTOCK L 
+			WHERE L.TANK_NO = T.TANK_NO 
+			AND L.DELETE_FL = 'N' 
+			AND L.MEMBER_NO = ? 
+			AND L.TANK_NO = ?) 생물수
 		FROM AR_TANK T
 		WHERE MEMBER_NO = ? AND TANK_NO = ? AND DELETE_FL = 'N'
 	</entry>
@@ -48,7 +54,8 @@
 	<entry key = "deleteTank">
 		UPDATE AR_TANK SET
 		DELETE_FL = 'Y'
-		WHERE TANK_NO = ? 
+		WHERE MEMBER_NO = ?
+		AND TANK_NO = ? 
 	</entry>
 	
 	

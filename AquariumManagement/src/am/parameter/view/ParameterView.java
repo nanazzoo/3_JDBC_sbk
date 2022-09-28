@@ -64,7 +64,7 @@ public class ParameterView {
 					System.out.println("등록일  : " + pParameter.getRegDate()  +"    " + cParameter.getRegDate());
 					System.out.println("온도    : " + pParameter.getParamTemp()  +"    ->  "+ cParameter.getParamTemp());
 					System.out.println("질산염  : " + pParameter.getParamNo3()  + "    ->  "+cParameter.getParamNo3());
-					System.out.println("인산염  : " + pParameter.getParamPo4()  +"     ->  "+cParameter.getParamPo4());
+					System.out.println("인산염  : " + pParameter.getParamPo4()  +"    ->  "+cParameter.getParamPo4());
 					System.out.println("경도    : " + pParameter.getParamKh()  +"     ->  "+cParameter.getParamKh());
 					System.out.println("칼슘    : " + pParameter.getParamCa()  +"   ->  " + cParameter.getParamCa());
 					System.out.println("마그네슘: " + pParameter.getParamMg()  +"  ->  "+ cParameter.getParamMg());

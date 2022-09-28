@@ -57,10 +57,10 @@ public class MemberService {
 	 * @return result
 	 * @throws Exception
 	 */
-	public int deleteTank(int tankNo) throws Exception {
+	public int deleteTank(int memberNo, int tankNo) throws Exception {
 		Connection conn = getConnection();
 		
-		int result = dao.deleteTank(conn, tankNo);
+		int result = dao.deleteTank(conn, memberNo, tankNo);
 		
 		if(result > 0) commit(conn);
 		else rollback(conn);

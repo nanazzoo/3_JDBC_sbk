@@ -182,6 +182,12 @@ public class ParameterDAO {
 	}
 
 
+	/** 물성치 삭제 DAO
+	 * @param conn
+	 * @param parameter
+	 * @return result
+	 * @throws Exception
+	 */
 	public int deleteParameter(Connection conn, Parameter parameter) throws Exception {
 		int result = 0;
 		
@@ -193,6 +199,33 @@ public class ParameterDAO {
 			pstmt.setInt(1, parameter.getMemberNo());
 			pstmt.setInt(2, parameter.getTankNo());
 			pstmt.setInt(3, parameter.getParameterNo());
+			
+			result = pstmt.executeUpdate();
+			
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+	
+	
+	/** 전체 물성치 삭제 DAO
+	 * @param conn
+	 * @param parameter
+	 * @return result
+	 * @throws Exception
+	 */
+	public int deleteAllParameter(Connection conn, Parameter parameter) throws Exception {
+		int result = 0;
+		
+		try {
+			String sql = prop.getProperty("deleteAllParameter");
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, parameter.getMemberNo());
+			pstmt.setInt(2, parameter.getTankNo());
 			
 			result = pstmt.executeUpdate();
 			

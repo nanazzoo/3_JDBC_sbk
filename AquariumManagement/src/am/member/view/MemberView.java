@@ -4,14 +4,19 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+import am.livestock.model.service.LivestockService;
 import am.livestock.view.LivestockView;
 import am.livestock.vo.Livestock;
 import am.main.view.AquariumView;
 import am.member.model.service.MemberService;
 import am.member.vo.Member;
+import am.parameter.model.service.ParameterService;
 import am.parameter.view.ParameterView;
+import am.parameter.vo.Parameter;
 import am.tank.vo.Tank;
+import am.todo.model.service.TodoService;
 import am.todo.view.TodoView;
+import am.todo.vo.Todo;
 
 public class MemberView {
 	private Scanner sc = new Scanner(System.in);
@@ -20,6 +25,10 @@ public class MemberView {
 	private LivestockView view = new LivestockView();
 	private ParameterView pView = new ParameterView();
 	private TodoView tView = new TodoView();
+	private LivestockService lService = new LivestockService();
+	private ParameterService pService = new ParameterService();
+	private TodoService tService = new TodoService();
+	
 	
 	private int input = -1;
 	public static int tankNo = 0;
@@ -155,19 +164,37 @@ public class MemberView {
 	 */
 	private void deleteTank(int tankNo) {
 		try {
-			
+			int memberNo = AquariumView.loginMember.getMemberNo();
 			System.out.println("\n[어항 삭제]\n");
 			
+			System.out.println("*!* 어항을 삭제하면 어항에 있는 생물, 물성치, 할 일 정보가 모두 삭제됩니다.");
 			System.out.print("정말로 삭제하시겠습니까?(Y/N): ");
 			char ch = sc.next().toUpperCase().charAt(0);
 			
 			if(ch == 'Y') {
 				System.out.println("\n어항을 삭제합니다.\n");
 				
-				int result = service.deleteTank(tankNo);
+				Livestock livestock = new Livestock();
+				livestock.setMemberNo(memberNo);
+				livestock.setTankNo(tankNo);
+				
+				Parameter parameter = new Parameter();
+				parameter.setMemberNo(memberNo);
+				parameter.setTankNo(tankNo);
+				
+				Todo todo = new Todo();
+				todo.setMemberNo(memberNo);
+				todo.setTankNo(tankNo);
+				
+				int result = service.deleteTank(memberNo, tankNo);
+				
 				
 				if(result > 0) {
 					System.out.println("\n[어항 삭제 성공]\n");
+					lService.deleteAllLivestock(livestock);
+					pService.deleteAllParameter(parameter);
+					tService.deleteAllTodo(todo);
+					
 					this.input = 0;
 				} else {
 					System.out.println("\n[어항 삭제 실패]\n");

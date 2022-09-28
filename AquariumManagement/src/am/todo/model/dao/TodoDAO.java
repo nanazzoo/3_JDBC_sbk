@@ -201,12 +201,20 @@ public class TodoDAO {
 	
 	return result;
 	}
+	
+	
 
+	/** 할 일 삭제 DAO
+	 * @param conn
+	 * @param todo
+	 * @return result
+	 * @throws Exception
+	 */
 	public int deleteTodo(Connection conn, Todo todo) throws Exception {
 		int result = 0;
 		
 		try {
-		String sql = prop.getProperty("completeTodo");
+		String sql = prop.getProperty("deleteTodo");
 		
 		pstmt = conn.prepareStatement(sql);
 		
@@ -221,6 +229,33 @@ public class TodoDAO {
 	}
 	
 	return result;
+	}
+	
+	
+	/** 전체 할 일 삭제 DAO
+	 * @param conn
+	 * @param todo
+	 * @return result
+	 * @throws Exception
+	 */
+	public int deleteAllTodo(Connection conn, Todo todo) throws Exception {
+		int result = 0;
+		
+		try {
+			String sql = prop.getProperty("deleteAllTodo");
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, todo.getMemberNo());
+			pstmt.setInt(2, todo.getTankNo());
+			
+			result = pstmt.executeUpdate();
+			
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
 	}
 
 	

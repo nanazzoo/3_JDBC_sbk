@@ -46,6 +46,8 @@ public class MemberDAO {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, memberNo);
 			pstmt.setInt(2, tankNo);
+			pstmt.setInt(3, memberNo);
+			pstmt.setInt(4, tankNo);
 			
 			rs = pstmt.executeQuery();
 			
@@ -115,7 +117,7 @@ public class MemberDAO {
 	 * @return result
 	 * @throws Exception
 	 */
-	public int deleteTank(Connection conn, int tankNo) throws Exception {
+	public int deleteTank(Connection conn, int memberNo, int tankNo) throws Exception {
 		int result = 0;
 		
 		try {
@@ -123,7 +125,8 @@ public class MemberDAO {
 			
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setInt(1, tankNo);
+			pstmt.setInt(1, memberNo);
+			pstmt.setInt(2, tankNo);
 			
 			result = pstmt.executeUpdate();
 					

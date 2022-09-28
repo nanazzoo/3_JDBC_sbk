@@ -264,5 +264,31 @@ public class LivestockDAO {
 		
 		return result;
 	}
+	
+	
+	/** 전체 생물 삭제 DAO
+	 * @param conn
+	 * @param livestock
+	 * @return result
+	 * @throws Exception
+	 */
+	public int deleteAllLivestock(Connection conn, Livestock livestock) throws Exception {
+		int result = 0;
+		
+		try {
+			String sql = prop.getProperty("deleteAllLivestock");
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, livestock.getMemberNo());
+			pstmt.setInt(2, livestock.getTankNo());
+			
+			result = pstmt.executeUpdate();
+			
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
 
 }

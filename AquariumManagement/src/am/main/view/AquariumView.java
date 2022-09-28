@@ -405,6 +405,8 @@ public class AquariumView {
 					System.out.println("\n[탈퇴를 취소합니다.]\n");
 				}
 				
+			} else {
+				System.out.println("\n[비밀번호가 일치하지 않습니다.]\n");
 			}
 			
 			

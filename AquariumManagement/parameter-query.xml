@@ -59,6 +59,14 @@
 		AND PARAMETER_NO = ?	
 	</entry>
 	
+	<!-- 전체 물성치 삭제 -->
+	<entry key="deleteAllParameter">
+		UPDATE AR_PARAMETER SET
+		DELETE_FL = 'Y'
+		WHERE MEMBER_NO = ?
+		AND TANK_NO = ?	
+	</entry>
+	
 	<!--  -->
 	<entry key="">
 	
