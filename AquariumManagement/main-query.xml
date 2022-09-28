@@ -42,7 +42,6 @@
 		SELECT MAX(TANK_NO)
 		FROM AR_TANK
 		WHERE MEMBER_NO = ?
-		AND DELETE_FL = 'N'
 	</entry>
 	
 	<!-- insertTank -->

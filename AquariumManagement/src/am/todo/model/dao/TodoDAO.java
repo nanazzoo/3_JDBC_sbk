@@ -284,7 +284,7 @@ public class TodoDAO {
 				
 				todos.setTodoNo(rs.getInt(1));
 				todos.setTodoContent(rs.getString(2));
-				todos.setRegDate(rs.getString(3));
+				todos.setConcludedDate(rs.getString(3));
 				
 				todoList.add(todos);	
 			}

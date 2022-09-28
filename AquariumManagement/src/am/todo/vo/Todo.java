@@ -7,6 +7,10 @@ public class Todo {
 	private String todoContent;
 	private String regDate;
 	private String todoTerm;
+	private String concludedDate;
+	
+	
+	
 	public int getMemberNo() {
 		return memberNo;
 	}
@@ -43,6 +47,13 @@ public class Todo {
 	public void setTodoTerm(String todoTerm) {
 		this.todoTerm = todoTerm;
 	}
+	public String getConcludedDate() {
+		return concludedDate;
+	}
+	public void setConcludedDate(String concludedDate) {
+		this.concludedDate = concludedDate;
+	}
+	
 	
 	
 

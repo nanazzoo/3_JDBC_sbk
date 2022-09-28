@@ -48,12 +48,11 @@ public class TodoView {
 					System.out.println("\n[지연된 할 일이 없습니다.]\n");
 				} else {
 					System.out.println("\n[*** 지연된 할 일 ***]\n");
-					System.out.println();
 
-					System.out.println("어항번호. | 할 일 번호 |     할 일     |  지연 기간\n");
+					System.out.println(" 할 일 번호 |     할 일     |  지연 기간\n");
 					for(Todo t : delayedTodoList) {
-						System.out.printf("%8d. | %10d | %s | %s\n",
-								t.getTankNo(), t.getTodoNo(), t.getTodoContent(), t.getTodoTerm());
+						System.out.printf(" %10d. | %s | %s\n",
+								t.getTodoNo(), t.getTodoContent(), t.getTodoTerm());
 					}
 				}
 				
@@ -154,7 +153,6 @@ public class TodoView {
 			for(Todo t: todoList) {
 				System.out.printf("%d. %s\n", t.getTodoNo(), t.getTodoContent());
 			}
-			
 			
 			System.out.print("완료할 할 일 번호 선택: ");
 			int todoNo = sc.nextInt();
@@ -258,9 +256,10 @@ public class TodoView {
 				System.out.println("\n[조회 결과가 없습니다.]\n");
 			} else {
 				System.out.println("\n[완료된 할 일 목록]\n");
+				System.out.println("할 일 번호|          할 일            | 완료일 ");
 				for(Todo t:todoList) {
-					System.out.printf("%d.   %18s  |  %s  \n"
-							, t.getTodoNo(), t.getTodoContent(), t.getRegDate());
+					System.out.printf("%8d.   %18s  |  %s  \n"
+							, t.getTodoNo(), t.getTodoContent(), t.getConcludedDate());
 				}
 			}
 

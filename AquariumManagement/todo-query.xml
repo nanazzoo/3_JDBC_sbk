@@ -48,7 +48,7 @@
 	<!-- 할 일 추가 -->
 	<entry key="insertTodo">
 		INSERT INTO AR_TODO_LIST 
-		VALUES(?, ?, ?, ?, SYSDATE, TO_DATE(?, 'YYYY-MM-DD'), DEFAULT, DEFAULT)
+		VALUES(?, ?, ?, ?, SYSDATE, TO_DATE(?, 'YYYY-MM-DD'), DEFAULT, DEFAULT, NULL)
 	</entry>
 	
 	<!-- 할 일 조회 -->
@@ -66,7 +66,8 @@
 	<!-- 할 일 완료 -->
 	<entry key="completeTodo">
 		UPDATE AR_TODO_LIST SET
-		CONCLUDED_FL = 'Y'
+		CONCLUDED_FL = 'Y',
+		CONCLUDED_DATE = SYSDATE
 		WHERE MEMBER_NO = ?
 		AND TANK_NO = ?
 		AND TODO_NO = ?
@@ -91,7 +92,7 @@
 	
 	<!-- 완료된 할 일 조회 -->
 	<entry key="selectComTodo">
-		SELECT TODO_NO , TODO_CONTENT, TO_CHAR(REG_DATE)
+		SELECT TODO_NO , TODO_CONTENT, TO_CHAR(CONCLUDED_DATE, 'YYYY-MM-DD')
 		FROM AR_TODO_LIST
 		WHERE MEMBER_NO = ?
 		AND TANK_NO =?
